@@ -1,3 +1,10 @@
+
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JProgressBar;
+import javax.swing.JTextArea;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -28,12 +35,14 @@ public class R2BMainWindow extends javax.swing.JFrame {
 
         loadButton = new javax.swing.JButton();
         exportButton = new javax.swing.JButton();
-        InputReq = new javax.swing.JPanel();
-        OutputReq = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jProgressBar1 = new javax.swing.JProgressBar();
         jLabel3 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        InputReq = new javax.swing.JTextArea();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        OutputReq = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Requirements2Boilerplate-Converter");
@@ -58,37 +67,19 @@ public class R2BMainWindow extends javax.swing.JFrame {
             }
         });
 
-        InputReq.setBackground(new java.awt.Color(255, 255, 255));
-
-        javax.swing.GroupLayout InputReqLayout = new javax.swing.GroupLayout(InputReq);
-        InputReq.setLayout(InputReqLayout);
-        InputReqLayout.setHorizontalGroup(
-            InputReqLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        InputReqLayout.setVerticalGroup(
-            InputReqLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 74, Short.MAX_VALUE)
-        );
-
-        OutputReq.setBackground(new java.awt.Color(255, 255, 255));
-
-        javax.swing.GroupLayout OutputReqLayout = new javax.swing.GroupLayout(OutputReq);
-        OutputReq.setLayout(OutputReqLayout);
-        OutputReqLayout.setHorizontalGroup(
-            OutputReqLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        OutputReqLayout.setVerticalGroup(
-            OutputReqLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 74, Short.MAX_VALUE)
-        );
-
         jLabel1.setText("Source Requirement:");
 
         jLabel2.setText("Suggested Requirement:");
 
         jLabel3.setText("Progress:");
+
+        InputReq.setColumns(20);
+        InputReq.setRows(5);
+        jScrollPane1.setViewportView(InputReq);
+
+        OutputReq.setColumns(20);
+        OutputReq.setRows(5);
+        jScrollPane2.setViewportView(OutputReq);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -102,13 +93,13 @@ public class R2BMainWindow extends javax.swing.JFrame {
                     .addComponent(jLabel3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jProgressBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(loadButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 99, Short.MAX_VALUE)
                         .addComponent(exportButton))
-                    .addComponent(OutputReq, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(InputReq, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jProgressBar1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1)
+                    .addComponent(jScrollPane2))
                 .addGap(25, 25, 25))
         );
         layout.setVerticalGroup(
@@ -120,17 +111,20 @@ public class R2BMainWindow extends javax.swing.JFrame {
                     .addComponent(exportButton))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(InputReq, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
-                .addGap(18, 18, 18)
+                    .addComponent(jLabel1)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(23, 23, 23)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(OutputReq, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3))
-                .addContainerGap(16, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane2)
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jProgressBar1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
 
         pack();
@@ -183,14 +177,80 @@ public class R2BMainWindow extends javax.swing.JFrame {
         });
     }
 
+    public JTextArea getInputReq() {
+        return InputReq;
+    }
+
+    public void setInputReq(JTextArea InputReq) {
+        this.InputReq = InputReq;
+    }
+
+    public JTextArea getOutputReq() {
+        return OutputReq;
+    }
+
+    public void setOutputReq(JTextArea OutputReq) {
+        this.OutputReq = OutputReq;
+    }
+
+    public JButton getExportButton() {
+        return exportButton;
+    }
+
+    public void setExportButton(JButton exportButton) {
+        this.exportButton = exportButton;
+    }
+
+    public JLabel getjLabel1() {
+        return jLabel1;
+    }
+
+    public void setjLabel1(JLabel jLabel1) {
+        this.jLabel1 = jLabel1;
+    }
+
+    public JLabel getjLabel2() {
+        return jLabel2;
+    }
+
+    public void setjLabel2(JLabel jLabel2) {
+        this.jLabel2 = jLabel2;
+    }
+
+    public JLabel getjLabel3() {
+        return jLabel3;
+    }
+
+    public void setjLabel3(JLabel jLabel3) {
+        this.jLabel3 = jLabel3;
+    }
+
+    public JProgressBar getjProgressBar1() {
+        return jProgressBar1;
+    }
+
+    public void setjProgressBar1(JProgressBar jProgressBar1) {
+        this.jProgressBar1 = jProgressBar1;
+    }
+
+    public JButton getLoadButton() {
+        return loadButton;
+    }
+
+    public void setLoadButton(JButton loadButton) {
+        this.loadButton = loadButton;
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel InputReq;
-    private javax.swing.JPanel OutputReq;
+    private javax.swing.JTextArea InputReq;
+    private javax.swing.JTextArea OutputReq;
     private javax.swing.JButton exportButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JProgressBar jProgressBar1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JButton loadButton;
     // End of variables declaration//GEN-END:variables
 }
