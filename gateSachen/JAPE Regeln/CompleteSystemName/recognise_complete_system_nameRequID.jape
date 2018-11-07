@@ -1,0 +1,17 @@
+Phase: RequID
+Input: Token
+Options: control = all
+
+
+Rule: RequID
+
+(
+(({Token.string == "PMUSysRQ"}) | ({Token.string == "PMUSafetyRQ"})) // auf Klammerung achten!
+({Token}) [1,3]
+{Token.string == ":"}
+) :id
+--> 
+:id.RequirementsID = {}
+
+
+ 

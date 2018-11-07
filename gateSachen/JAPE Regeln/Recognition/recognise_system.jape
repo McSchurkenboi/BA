@@ -1,0 +1,18 @@
+Phase: CompleteSystemName
+Input: Token
+Options: control = appelt
+
+Rule: CompleteSystemName
+
+({Token.category == DT})?
+(
+({Token.category == NNP})+
+({Token.kind==number})?
+({Token.category == NNP})*
+({Token.category == NN})?
+
+) 
+:systemname
+
+-->
+:systemname.CompleteSystemName = {rule="CompleteSystemName"}

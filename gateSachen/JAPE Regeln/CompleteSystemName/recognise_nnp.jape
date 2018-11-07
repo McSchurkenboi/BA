@@ -1,0 +1,13 @@
+Phase: NNP
+Input: Token
+Options: control = appelt
+
+Rule: allNNP
+
+
+(
+{Token.category == NNP}
+) 
+:nnp
+-->
+:nnp.NNP = {}

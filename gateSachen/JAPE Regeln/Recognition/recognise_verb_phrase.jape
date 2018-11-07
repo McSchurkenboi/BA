@@ -1,0 +1,14 @@
+Phase: System
+
+Options: control = all
+
+Rule: System
+
+(
+
+({Token.category == VB})
+):ann
+-->
+:ann.Verb = {rule="System"}
+
+

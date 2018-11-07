@@ -1,0 +1,7 @@
+MultiPhase: Recognition
+Phases:
+recognise_complete_system_nameRequID
+recognise_complete_system_nameNNP
+recognise_complete_system_nameNN1
+recognise_complete_system_nameNN2
+recognise_nnp

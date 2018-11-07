@@ -1,0 +1,29 @@
+Phase: FunctionDescription
+Input: Token Split
+Options: control = appelt  debug = true
+
+Rule: FunctionDescription
+
+
+
+({Token.string == "shall"})
+(
+
+({Token})+
+
+)
+:ann
+({Split})
+
+--> 
+:ann.FunctionDescription = {}
+
+
+
+/*
+
+Beachte: im Input muss die Annotation Type "Split" stehen!
+
+{Token.kind == punctuation} --> damit funktioniert es nicht
+
+*/

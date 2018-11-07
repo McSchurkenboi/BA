@@ -1,0 +1,18 @@
+Phase: CompleteSystemNameNN2
+Input: Token
+Options: control = appelt
+
+
+Rule: CompleteSystemNameNN2    //2. Variante, da das "The" manchmal als Systembezeichnung annotiert wird                       
+
+(
+({Token.category == NN})
+
+({Token}) [0,3]
+
+):systemnamenn2
+
+({Token.category == MD})
+
+-->
+:systemnamenn2.CompleteSystemNameNN2 = {}

@@ -1,0 +1,28 @@
+Phase: SystemCharacteristic
+Input: Token
+Options: control = appelt  debug = true
+
+Rule: SystemCharacteristic
+
+
+({Token.category == DT})?
+
+(
+
+({Token.category == NN})+
+({Token})?
+({Token.category == NN})+
+
+)
+:ann
+({Token.string == "of"})
+
+--> 
+:ann.SystemCharacteristic = {rule="SystemCharacteristic"}
+
+
+
+/*"Input: Token" hat den entscheidenden Unterschied gemacht*/
+
+
+/* Achtung: current wird als JJ (Adjektive) und nicht als Strom geparsed*/

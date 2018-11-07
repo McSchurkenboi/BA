@@ -1,0 +1,14 @@
+Phase: firstpass
+Input: Token
+Options: control = all
+
+Rule: TemperatureAnno
+(
+{Token.string=="liquid"}
+{Token.string=="temperature"}
+)
+:temperaturetag 
+-->
+:temperaturetag.TemperatureAn = {rule = "TemperatureAnno", kind= "temperature", text=:temperaturetag@cleanString}
+
+
