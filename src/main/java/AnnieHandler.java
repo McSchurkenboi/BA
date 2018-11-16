@@ -26,6 +26,7 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
@@ -39,7 +40,8 @@ import java.util.logging.Logger;
  */
 public class AnnieHandler {
 
-    CorpusController controller;
+    static CorpusController controller;
+    static ArrayList parList;
 
     public void init() {
         try {
@@ -85,6 +87,14 @@ public class AnnieHandler {
             Document doc = Factory.newDocument(source.toURI().toURL());
             corpus.add(doc);
 
+            //ArrayList with size of sentence count
+            parList = new ArrayList(doc.getAnnotations("paragraph").size());
+            
+            //For each sentence, a list of possible BP conversions is created
+            for (int i = 0 ; i<parList.size(); i++){
+                parList.set(i, new LinkedList());
+            }
+
             System.out.println(controller.getPRs().toString());
 
             controller.execute();
@@ -101,29 +111,29 @@ public class AnnieHandler {
                 // in this example
                 AnnotationSet defaultAnnots = doc.getAnnotations();
                 Iterator annotTypesIt = annotTypes.iterator();
-                
+
                 //Find sentences matching to the BPs
                 while (annotTypesIt.hasNext()) {
                     // extract all the annotations of each requested type and add them to
                     // the temporary set
                     String current = (String) annotTypesIt.next();
                     AnnotationSet annotsOfThisType = defaultAnnots.get(current);
-                    
+
                     // If taggings were found, add them to the output Set
                     if (annotsOfThisType != null) {
                         annotationsToWrite.addAll(annotsOfThisType);
                     }
                 }
-                
+
                 //
                 outputProcessedReq(doc.toXml(annotationsToWrite));
             }
-/*            Set annotationsToWrite = new HashSet();
+            /*            Set annotationsToWrite = new HashSet();
             AnnotationSet annSet = doc.getAnnotations("");
             annotationsToWrite.addAll(annSet.get("Boilerplate65c"));
             outputProcessedReq(doc.toXml(annotationsToWrite));
-*/
-            
+             */
+
             //System.out.println(corpus.get(0).toXml());
         } catch (ExecutionException | MalformedURLException | ResourceInstantiationException ex) {
             Logger.getLogger(AnnieHandler.class.getName()).log(Level.SEVERE, null, ex);
@@ -133,24 +143,28 @@ public class AnnieHandler {
     private void outputProcessedReq(String output) {
 
         System.out.println(output);
-            // Write output files
-            Main.gui.getOutputReq().setText(output);
+        // Write output files
+        Main.gui.getOutputReq().setText(output);
 
-            
-            /*try {
+    }
+
+    public void exportToFileSystem() {
+        try {
 
             FileOutputStream fos = new FileOutputStream(Main.outputFile);
             BufferedOutputStream bos = new BufferedOutputStream(fos);
             OutputStreamWriter out;
             out = new OutputStreamWriter(bos);
 
-            out.write(output);
+            for (Object o : parList) {
+                out.write(o.toString());
+            }
 
             out.close();
-             
+
         } catch (IOException ex) {
             Logger.getLogger(AnnieHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
-         */
+
     }
 }
