@@ -1,0 +1,11 @@
+Phase: firstpass
+Input: Lookup
+Options: control = all
+
+Rule: modellFeatures 
+( 
+{Lookup.majorType=="Fahrzeugmodell"}   
+)   
+:fahrzeugmodelltag
+--> 
+:fahrzeugmodelltag.FahrzeugmodellAn = {rule = "modellFeatures", kind= "complete system", text= :fahrzeugmodelltag.Lookup@cleanString}

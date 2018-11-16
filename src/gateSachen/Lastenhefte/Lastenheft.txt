@@ -1,0 +1,7 @@
+Golf7 shall perform TestDriveCityTour.
+
+Golf7 shall perform Charge4FreeCharging.
+
+EBus2X is part of vehicle Golf7.
+
+The durability of EBus2X shall be at least 12000 h.

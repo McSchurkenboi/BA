@@ -1,0 +1,24 @@
+Phase: CompleteSystemNameNN1
+Input: Token
+Options: control = appelt
+
+
+Rule: CompleteSystemNameNN1    //Systembezeichnungem im LH aus NN und NNP, NNP und NN mit einer Regel nicht annotierbar (bisher)  
+			       //Multi-Constraints Statements sind eine denkbare Lösung für das oben genannte Problem                     
+
+(({Token.string == "The"}) | ({Token.string == "Our"}) 
+
+| ({Token.string == "A"})| ({Token.string == "All"}))
+
+(
+({Token.category == NN})+
+
+({Token}) [0,3]
+
+):systemnamenn1
+
+({Token.category == MD})
+
+-->
+:systemnamenn1.CompleteSystemNameNN1 = {}
+

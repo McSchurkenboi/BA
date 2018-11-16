@@ -1,0 +1,11 @@
+Phase: firstpass
+Input: Lookup
+Options: control = all
+
+Rule: operationFeatures 
+( 
+{Lookup.majorType == "Operation"}
+)   
+:operationtag
+--> 
+:operationtag.OperationAn = {rule = "operationFeatures", kind="operation", text= :operationtag.Lookup@cleanString}

@@ -1,0 +1,1 @@
+The liquid temperature shall be monitored by the ECU.

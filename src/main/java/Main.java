@@ -1,16 +1,10 @@
 
 import java.awt.event.ActionEvent;
-import java.io.BufferedReader;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.Authenticator;
-import java.net.PasswordAuthentication;
 import javax.swing.JFileChooser;
-import java.net.Authenticator;
-import java.net.URL;
-import java.net.URLConnection;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -24,58 +18,18 @@ import java.net.URLConnection;
 public class Main {
 
     static R2BMainWindow gui;
-    static File input, output;
+    static File inputFile, outputFile;
+    static AnnieHandler annie;
 
     public static void main(String[] args) throws IOException {
-        
-        //initGUI();
-        
-        System.getProperties().put("http.proxyHost", "proxy1.hella.com");
-        System.getProperties().put("http.proxyPort", "3128");
-        System.getProperties().put("http.proxyUser", "rittfe1");
-        System.getProperties().put("http.proxyPassword", "MacSchnurke_1");
-        System.setProperty("http.nonProxyHosts", "localhost|127.0.0.1");
 
-        final String authUser = "rittfe1";
-        final String authPassword = "MacSchnurke_1";
-        Authenticator.setDefault(
-                new Authenticator() {
-            @Override
-            public PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(
-                        authUser, authPassword.toCharArray());
-            }
-        }
-        );
-        System.setProperty("java.net.useSystemProxies", "true");
-        System.setProperty("http.proxyHost", "proxy1.hella.com");
-        System.setProperty("http.proxyPort", "3128");
-        System.setProperty("http.proxyUser", authUser);
-        System.setProperty("http.proxyPassword", authPassword);
+        initGUI();
 
-        Authenticator.setDefault(new Authenticator() {
-            @Override
-            protected PasswordAuthentication getPasswordAuthentication() {
+        annie = new AnnieHandler();
 
-                return new PasswordAuthentication(authUser, authPassword.toCharArray());
-            }
-        });
-/*        URL url = new URL("http://www.google.com/");
-        URLConnection con = url.openConnection();
-        BufferedReader in = new BufferedReader(new InputStreamReader(
-                con.getInputStream()));
+        annie.initFromRestore();
 
-// Read it ...
-        String inputLine;
-        while ((inputLine = in.readLine()) != null) {
-            System.out.println(inputLine);
-        }
-
-        in.close();
-      */
-        AnnieHandler annie = new AnnieHandler();
-
-        annie.init();
+        //outputFile = new File("C:\\Users\\rittfe1\\Desktop\\output.txt");
     }
 
     public static void initGUI() {
@@ -87,15 +41,19 @@ public class Main {
 
             gui.getLoadButton().addActionListener((ActionEvent e) -> {
                 dialog.showOpenDialog(gui);
-                input = dialog.getSelectedFile();
-                if (input != null) {
+                inputFile = dialog.getSelectedFile();
+                if (inputFile != null) {
                     try {
-                        gui.getInputReq().read(new FileReader(input), e);
+                        gui.getInputReq().read(new FileReader(inputFile), e);
                     } catch (IOException e1) {
                         System.out.println("Fehler beim Lesen der Datei.");
                     }
-                    System.out.println("Loaded:" + input.getName());
+                    System.out.println("Loaded:" + inputFile.getName());
                 }
+            });
+
+            gui.getConvertButton().addActionListener((ActionEvent e) -> {
+                annie.execute();
             });
 
             gui.getExportButton().addActionListener((ActionEvent e) -> {

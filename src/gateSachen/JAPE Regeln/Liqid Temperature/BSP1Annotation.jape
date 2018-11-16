@@ -1,0 +1,13 @@
+Phase: firstpass
+Input: Lookup
+Options: control = all
+
+Rule: BSP1Anno
+(
+{Lookup.majorType=="Beispiele"}
+)
+:beispieltag
+-->
+:beispieltag.ExEntity = {rule = "BSP1Anno", kind= "ExampleEntity", text =:beispieltag@cleanString}
+
+

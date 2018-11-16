@@ -1,0 +1,5 @@
+MultiPhase: Recognition
+Phases:
+recognise_system
+recognise_system_characteristic
+recognise_verb_phrase

@@ -1,0 +1,28 @@
+Phase: BoilerPlateConversion
+Input: Token Split FunctionDescription CompleteSystemName
+Options: control = appelt  debug = true
+
+Rule: BP65_bsp
+(
+
+({Token, !Split})*
+({CompleteSystemName})
+({Token, !Split})*
+({FunctionDescription})
+({Token, !Split})*
+
+)
+:ann
+
+--> 
+:ann.Boilerplate65c = {rule=BP65_bsp}
+
+
+
+/*
+
+Beachte: im Input muss die Annotation Type "Split" stehen!
+
+{Token.kind == punctuation} --> damit funktioniert es nicht
+
+*/

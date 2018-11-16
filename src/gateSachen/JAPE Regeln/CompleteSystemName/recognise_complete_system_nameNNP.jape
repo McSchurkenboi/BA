@@ -1,0 +1,20 @@
+Phase: CompleteSystemNameNNP
+Input: Token
+Options: control = appelt
+
+
+Rule: CompleteSystemNameNNP
+
+({Token.category == NNP} {Token.kind == number} {Token.string ==":"})? //Token hat höhere Gewichtung bei Treffer, RequID als Kontext zu verwenden hat nicht geklappt!
+                                        
+(
+({Token.category == NNP}
+
+({Token}) [0,3])
+
+):systemnamennp
+
+({Token.category == MD})
+
+-->
+:systemnamennp.CompleteSystemNameNNP = {}

@@ -1,0 +1,18 @@
+Phase: FunctionalRequirement
+Input: Token
+Options: control = appelt
+
+Rule: FunctionalRequirement
+
+
+({Token})+
+
+(
+({Token.category == NNP})+
+({Token})?
+({Token.category == NNP})*
+({Token.category == NN})?
+) 
+:function
+-->
+:function.FunctionalRequirement = {}

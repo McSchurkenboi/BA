@@ -1,0 +1,18 @@
+Phase: firstpass
+Input: FahrzeugmodellAn OperationAn
+Options: control = all
+
+Rule: FahrzeugOperationBP
+(
+{FahrzeugmodellAn.kind=="complete system"}
+)
+:fahrzeugmodelletag 
+(
+{OperationAn.kind=="operation"}
+)
+:operationentag 
+-->
+:fahrzeugmodelletag.AnPairFahrzeug = {rule = "FahrzeugOperationBP", kind= :fahrzeugmodelletag.FahrzeugmodellAn.kind, text =:fahrzeugmodelletag.FahrzeugmodellAn.text},
+:operationentag.AnPairOperation = {rule = "FahrzeugOperationBP", kind= :operationentag.OperationAn.kind, text = :operationentag.OperationAn.text}
+
+
