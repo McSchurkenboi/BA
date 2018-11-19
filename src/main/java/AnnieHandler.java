@@ -1,10 +1,14 @@
 
+import gate.Annotation;
 import gate.AnnotationSet;
 import gate.Corpus;
 import gate.CorpusController;
 import gate.Document;
 import gate.Factory;
+import gate.FeatureMap;
 import gate.Gate;
+import gate.GateConstants;
+import gate.corpora.TextualDocumentFormat;
 import gate.creole.ANNIEConstants;
 import gate.creole.ConditionalSerialAnalyserController;
 import gate.creole.ExecutionException;
@@ -15,12 +19,9 @@ import gate.util.GateException;
 import gate.util.persistence.PersistenceManager;
 import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.io.Writer;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -88,15 +89,21 @@ public class AnnieHandler {
             corpus.add(doc);
 
             //ArrayList with size of sentence count
-            parList = new ArrayList(doc.getAnnotations("paragraph").size());
-            
+            int sentenceCount = doc.getNamedAnnotationSets().get("Original markups").get("paragraph").size();
+            System.out.println(sentenceCount);
+            parList = new ArrayList(sentenceCount);
+
             //For each sentence, a list of possible BP conversions is created
-            for (int i = 0 ; i<parList.size(); i++){
-                parList.set(i, new LinkedList());
+            for (int i = 0; i < sentenceCount; i++) {
+                parList.add(i, new LinkedList<String>());
             }
 
-            System.out.println(controller.getPRs().toString());
-
+            //Load List of BPs for a sentence
+            /*LinkedList<String> bpList = (LinkedList<String>) parList.get(0);
+            bpList.add("Boilerplate65c");
+            System.out.println("Anzahl Sätze:" + parList.size());
+             */
+            
             controller.execute();
 
             //create List of BPs to iterate
