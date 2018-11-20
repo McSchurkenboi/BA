@@ -1,14 +1,9 @@
 
-import gate.Annotation;
-import gate.AnnotationSet;
 import gate.Corpus;
 import gate.CorpusController;
 import gate.Document;
 import gate.Factory;
-import gate.FeatureMap;
 import gate.Gate;
-import gate.GateConstants;
-import gate.corpora.TextualDocumentFormat;
 import gate.creole.ANNIEConstants;
 import gate.creole.ConditionalSerialAnalyserController;
 import gate.creole.ExecutionException;
@@ -25,11 +20,7 @@ import java.io.OutputStreamWriter;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -41,8 +32,10 @@ import java.util.logging.Logger;
  */
 public class AnnieHandler {
 
-    static CorpusController controller;
-    static ArrayList parList;
+    public Corpus corpus;
+    public Document doc;
+    public CorpusController controller;
+    public ArrayList<LinkedList<String>> parList;
 
     public void init() {
         try {
@@ -82,72 +75,24 @@ public class AnnieHandler {
     public void execute() {
         try {
             //create Corpus for document from file system
-            Corpus corpus = Factory.newCorpus("MyCorpus");
+            corpus = Factory.newCorpus("MyCorpus");
             controller.setCorpus(corpus);
             File source = Main.inputFile;
-            Document doc = Factory.newDocument(source.toURI().toURL());
+            doc = Factory.newDocument(source.toURI().toURL());
             corpus.add(doc);
 
-            //ArrayList with size of sentence count
-            int sentenceCount = doc.getNamedAnnotationSets().get("Original markups").get("paragraph").size();
-            System.out.println(sentenceCount);
-            parList = new ArrayList(sentenceCount);
-
-            //For each sentence, a list of possible BP conversions is created
-            for (int i = 0; i < sentenceCount; i++) {
-                parList.add(i, new LinkedList<String>());
-            }
-
-            //Load List of BPs for a sentence
-            /*LinkedList<String> bpList = (LinkedList<String>) parList.get(0);
-            bpList.add("Boilerplate65c");
-            System.out.println("Anzahl Sätze:" + parList.size());
-             */
-            
             controller.execute();
 
-            //create List of BPs to iterate
-            List annotTypes = new ArrayList();
-            annotTypes.add("Boilerplate65c");
-
-            if (annotTypes != null) {
-                // Create a temporary Set to hold the annotations we wish to write out
-                Set annotationsToWrite = new HashSet();
-
-                // we only extract annotations from the default (unnamed) AnnotationSet
-                // in this example
-                AnnotationSet defaultAnnots = doc.getAnnotations();
-                Iterator annotTypesIt = annotTypes.iterator();
-
-                //Find sentences matching to the BPs
-                while (annotTypesIt.hasNext()) {
-                    // extract all the annotations of each requested type and add them to
-                    // the temporary set
-                    String current = (String) annotTypesIt.next();
-                    AnnotationSet annotsOfThisType = defaultAnnots.get(current);
-
-                    // If taggings were found, add them to the output Set
-                    if (annotsOfThisType != null) {
-                        annotationsToWrite.addAll(annotsOfThisType);
-                    }
-                }
-
-                //
-                outputProcessedReq(doc.toXml(annotationsToWrite));
-            }
-            /*            Set annotationsToWrite = new HashSet();
-            AnnotationSet annSet = doc.getAnnotations("");
-            annotationsToWrite.addAll(annSet.get("Boilerplate65c"));
-            outputProcessedReq(doc.toXml(annotationsToWrite));
-             */
-
-            //System.out.println(corpus.get(0).toXml());
+            BoilerplateHandler bpHandler = new BoilerplateHandler(this);
+            bpHandler.initializeParagraphs();
+            
         } catch (ExecutionException | MalformedURLException | ResourceInstantiationException ex) {
             Logger.getLogger(AnnieHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    private void outputProcessedReq(String output) {
+    
+    public void outputProcessedReq(String output) {
 
         System.out.println(output);
         // Write output files

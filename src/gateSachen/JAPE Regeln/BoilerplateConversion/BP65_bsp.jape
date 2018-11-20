@@ -15,7 +15,11 @@ Rule: BP65_bsp
 :ann
 
 --> 
-:ann.Boilerplate65c = {rule=BP65_bsp}
+:ann.Boilerplate65c = {rule=BP65_bsp, 
+text=:ann@cleanString, 
+completeSystemNameText=:ann.CompleteSystemName@cleanString,
+functionDescriptionText=:ann.FunctionDescription@cleanString
+}
 
 
 

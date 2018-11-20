@@ -1,6 +1,5 @@
 
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -56,6 +55,11 @@ public class Main {
             gui.getConvertButton().addActionListener((ActionEvent e) -> {
                 annie.execute();
             });
+
+            gui.getjProgressBar1().setStringPainted(true);
+
+            gui.getPbLabel1().setText("0");
+            gui.getPbLabel2().setText("0");
 
             gui.getExportButton().addActionListener((ActionEvent e) -> {
                 dialog.showSaveDialog(gui);
