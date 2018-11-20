@@ -12,7 +12,7 @@ import gate.creole.ResourceInstantiationException;
 import gate.creole.ResourceReference;
 import gate.util.GateException;
 import gate.util.persistence.PersistenceManager;
-import java.io.BufferedOutputStream;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -85,6 +85,7 @@ public class AnnieHandler {
 
             BoilerplateHandler bpHandler = new BoilerplateHandler(this);
             bpHandler.initializeParagraphs();
+            //bpHandler.findPossibleConversions();
             
         } catch (ExecutionException | MalformedURLException | ResourceInstantiationException ex) {
             Logger.getLogger(AnnieHandler.class.getName()).log(Level.SEVERE, null, ex);
@@ -104,16 +105,15 @@ public class AnnieHandler {
         try {
 
             FileOutputStream fos = new FileOutputStream(Main.outputFile);
-            BufferedOutputStream bos = new BufferedOutputStream(fos);
-            OutputStreamWriter out;
-            out = new OutputStreamWriter(bos);
+            BufferedWriter bos = new BufferedWriter(new OutputStreamWriter(fos));
 
-            for (Object o : parList) {
-                out.write(o.toString());
+            for (LinkedList<String> list : parList) {
+                bos.write(list.getFirst());
+                bos.newLine();
             }
 
-            out.close();
-
+            bos.close();
+            System.out.println("Saved to file:" + Main.outputFile);
         } catch (IOException ex) {
             Logger.getLogger(AnnieHandler.class.getName()).log(Level.SEVERE, null, ex);
         }

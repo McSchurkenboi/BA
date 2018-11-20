@@ -78,11 +78,10 @@ class BoilerplateHandler {
                 System.out.println(ob);
             }
         }
-         */
+        */
         //System.out.println("Element:" + liste.getFirst());
         Main.gui.getjProgressBar1().setMaximum(sentenceCount);
         Main.gui.getPbLabel2().setText(String.valueOf(sentenceCount));
-
     }
 
     //Fill parList with possible conversions
@@ -132,7 +131,10 @@ class BoilerplateHandler {
     }
 
     private void storeProcessedReq() {
-        //TODO save the changes after user review
+        //save the changes after user review
+        if (!"".equals(Main.gui.getOutputReq().getText())) {
+            annie.parList.get(currentReq).set(0, Main.gui.getOutputReq().getText());
+        }
         Main.gui.getjProgressBar1().setValue(++currentReq);
     }
 

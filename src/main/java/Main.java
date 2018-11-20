@@ -48,7 +48,7 @@ public class Main {
                         System.out.println("Fehler beim Lesen der Datei.");
                     }
                     System.out.println("Loaded:" + inputFile.getName());
-
+                    dialog.setSelectedFile(null);
                 }
             });
 
@@ -67,8 +67,8 @@ public class Main {
                 if (outputFile != null) {
                     annie.exportToFileSystem();
                 }
+                dialog.setSelectedFile(null);
             });
-
             gui.setVisible(true);
             System.out.println("GUI geladen.");
         });
