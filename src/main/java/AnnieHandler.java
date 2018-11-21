@@ -1,4 +1,5 @@
 
+import gate.Annotation;
 import gate.Corpus;
 import gate.CorpusController;
 import gate.Document;
@@ -35,7 +36,8 @@ public class AnnieHandler {
     public Corpus corpus;
     public Document doc;
     public CorpusController controller;
-    public ArrayList<LinkedList<String>> parList;
+    public ArrayList<LinkedList<Annotation>> parList;
+    BoilerplateHandler bpHandler;
 
     public void init() {
         try {
@@ -83,16 +85,15 @@ public class AnnieHandler {
 
             controller.execute();
 
-            BoilerplateHandler bpHandler = new BoilerplateHandler(this);
+            bpHandler = new BoilerplateHandler(this);
             bpHandler.initializeParagraphs();
             //bpHandler.findPossibleConversions();
-            
+
         } catch (ExecutionException | MalformedURLException | ResourceInstantiationException ex) {
             Logger.getLogger(AnnieHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    
     public void outputProcessedReq(String output) {
 
         System.out.println(output);
@@ -101,22 +102,4 @@ public class AnnieHandler {
 
     }
 
-    public void exportToFileSystem() {
-        try {
-
-            FileOutputStream fos = new FileOutputStream(Main.outputFile);
-            BufferedWriter bos = new BufferedWriter(new OutputStreamWriter(fos));
-
-            for (LinkedList<String> list : parList) {
-                bos.write(list.getFirst());
-                bos.newLine();
-            }
-
-            bos.close();
-            System.out.println("Saved to file:" + Main.outputFile);
-        } catch (IOException ex) {
-            Logger.getLogger(AnnieHandler.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-    }
 }

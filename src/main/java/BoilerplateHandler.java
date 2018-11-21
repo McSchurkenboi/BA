@@ -3,12 +3,18 @@ import gate.Annotation;
 import gate.AnnotationSet;
 import gate.Utils;
 import java.awt.event.ActionEvent;
+import java.io.BufferedWriter;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -21,8 +27,9 @@ import java.util.Set;
  */
 class BoilerplateHandler {
 
-    int currentReq;
+    int currentReq = 0;
     private final AnnieHandler annie;
+    public ArrayList<LinkedList<String>> outputList;
 
     public BoilerplateHandler(AnnieHandler annie) {
         this.annie = annie;
@@ -38,21 +45,25 @@ class BoilerplateHandler {
         System.out.println(sentenceCount);
         annie.parList = new ArrayList<>(sentenceCount);
 
-        LinkedList<String> sentences = new LinkedList<>();
-        annie.doc.getAnnotations().get("Sentence").forEach(a -> sentences.add(Utils.stringFor(annie.doc, a)));
+        outputList = new ArrayList<>(sentenceCount);
+//        LinkedList<Annotation> annotations = new LinkedList<>();
+//        annie.doc.getAnnotations().get("Sentence").forEach(a -> annotations.add(a));
 
-        for (String sentence : sentences) {
-            LinkedList<String> liste = new LinkedList<>();
-            liste.add(sentence);
+        AnnotationSet annotations = annie.doc.getAnnotations().get("Sentence");
+
+        for (Annotation anno : annotations) {
+            //Initialize parList
+            LinkedList<Annotation> liste = new LinkedList<>();
+            liste.add(anno);
             annie.parList.add(liste);
-            System.out.println("Satz eingefügt: " + sentence);
-        }
 
-        annie.parList.forEach((o) -> {
-            for (String ob : o) {
-                System.out.println(ob);
-            }
-        });
+            //Initialize outputList with source sentence as first element
+            LinkedList<String> output = new LinkedList<>();
+            output.add(Utils.stringFor(annie.doc, anno));
+            outputList.add(output);
+
+            System.out.println("Satz eingefügt: " + Utils.cleanStringFor(annie.doc, anno));
+        }
 
         Main.gui.getConvertButton().setEnabled(false);
         //Load first element to the GUI
@@ -78,7 +89,7 @@ class BoilerplateHandler {
                 System.out.println(ob);
             }
         }
-        */
+         */
         //System.out.println("Element:" + liste.getFirst());
         Main.gui.getjProgressBar1().setMaximum(sentenceCount);
         Main.gui.getPbLabel2().setText(String.valueOf(sentenceCount));
@@ -87,9 +98,14 @@ class BoilerplateHandler {
     //Fill parList with possible conversions
     public void findPossibleConversions() {
 
+        for (Annotation anno : annie.parList.get(currentReq)) {
+
+        }
+
+        /*
         //Load List of BPs for a sentence
-        LinkedList<String> bpList = (LinkedList<String>) annie.parList.get(0);
-        bpList.add("Boilerplate65c");
+        LinkedList<Annotation> bpList = (LinkedList<Annotation>) annie.parList.get(0);
+        //bpList.add("Boilerplate65c");
         System.out.println("Anzahl Sätze:" + annie.parList.size());
 
         //create List of BPs to iterate
@@ -126,24 +142,28 @@ class BoilerplateHandler {
             annotationsToWrite.addAll(annSet.get("Boilerplate65c"));
             outputProcessedReq(doc.toXml(annotationsToWrite));
          */
-
         //System.out.println(corpus.get(0).toXml());
     }
 
     private void storeProcessedReq() {
-        //save the changes after user review
+        //If changed, than append processed requirement to the output List
         if (!"".equals(Main.gui.getOutputReq().getText())) {
-            annie.parList.get(currentReq).set(0, Main.gui.getOutputReq().getText());
+            outputList.get(currentReq).set(0,Main.gui.getOutputReq().getText());
         }
         Main.gui.getjProgressBar1().setValue(++currentReq);
     }
 
     private void loadNextReq() {
         Main.gui.getPbLabel1().setText(String.valueOf(currentReq));
+
+        //Load next sentence and its annotations from parList
         if (currentReq < annie.parList.size()) {
-            Iterator<String> it = annie.parList.get(currentReq).iterator();
+            Iterator<String> it = outputList.get(currentReq).iterator();
+            
+            //Show the source sentence in the upper TextField
             Main.gui.getInputReq().setText(it.next());
 
+            //Iterate over the BP annotated for this sentence and print them as suggestions
             while (it.hasNext()) {
                 Main.gui.getOutputReq().append(it.next());
             }
@@ -152,6 +172,24 @@ class BoilerplateHandler {
             Main.gui.getConfirmButton().setEnabled(false);
 
         }
-        //Main.gui.getConfirmButton()
+    }
+
+    public void exportToFileSystem() {
+        try {
+
+            FileOutputStream fos = new FileOutputStream(Main.outputFile);
+            BufferedWriter bos = new BufferedWriter(new OutputStreamWriter(fos));
+            
+            for (LinkedList<String> list : outputList) {
+                bos.write(list.getFirst());
+                bos.newLine();
+            }
+
+            bos.close();
+            System.out.println("Saved to file:" + Main.outputFile);
+        } catch (IOException ex) {
+            Logger.getLogger(AnnieHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 }

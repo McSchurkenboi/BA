@@ -53,19 +53,21 @@ public class Main {
             });
 
             gui.getConvertButton().addActionListener((ActionEvent e) -> {
-                annie.execute();
+                gui.getConfirmButton().setEnabled(true);
+                annie.execute(); 
             });
 
             gui.getjProgressBar1().setStringPainted(true);
 
             gui.getPbLabel1().setText("0");
             gui.getPbLabel2().setText("0");
+            gui.getConfirmButton().setEnabled(false);
 
             gui.getExportButton().addActionListener((ActionEvent e) -> {
                 dialog.showSaveDialog(gui);
                 outputFile = dialog.getSelectedFile();
                 if (outputFile != null) {
-                    annie.exportToFileSystem();
+                    annie.bpHandler.exportToFileSystem();
                 }
                 dialog.setSelectedFile(null);
             });
