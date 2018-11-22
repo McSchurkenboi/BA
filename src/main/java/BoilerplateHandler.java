@@ -28,7 +28,7 @@ import java.util.logging.Logger;
  */
 class BoilerplateHandler {
 
-    int currentReq = 0;
+    int currentReq = -1;
     private final AnnieHandler annie;
     public ArrayList<LinkedList<String>> outputList;
 
@@ -103,7 +103,7 @@ class BoilerplateHandler {
 
             //find matching BPs within span of paragraph
             bpSet.stream().filter((bpAnno) -> (bpAnno.withinSpanOf(paragraph.get(0)))).forEachOrdered((e) -> paragraph.add(e));
-            bpSet.stream().filter((bpAnno) -> (bpAnno.withinSpanOf(paragraph.get(0)))).forEachOrdered((e) -> System.out.println(e));
+            //bpSet.stream().filter((bpAnno) -> (bpAnno.withinSpanOf(paragraph.get(0)))).forEachOrdered((e) -> System.out.println(e));
         });
 
     }
