@@ -133,20 +133,18 @@ class BoilerplateHandler {
 //return "The " //+ Utils.stringFor(annie.doc, an.getFeatures().get("CompleteSystemNameText"));
     }
 
-    public void skip() {
-        Main.gui.getjProgressBar1().setValue(++currentReq);
-    }
 
     public void storeProcessedReq() {
         //If changed, than append processed requirement to the output List
         if (!"".equals(Main.gui.getOutputReq().getText())) {
             outputList.get(currentReq).set(0, Main.gui.getOutputReq().getText());
         }
-        Main.gui.getjProgressBar1().setValue(++currentReq);
+        //Main.gui.getjProgressBar1().setValue(++currentReq);
 
     }
 
     public void loadNextReq() {
+        Main.gui.getjProgressBar1().setValue(++currentReq);
 
         Main.gui.getPbLabel1().setText(String.valueOf(currentReq));
 
