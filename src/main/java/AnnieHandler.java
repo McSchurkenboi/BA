@@ -86,8 +86,15 @@ public class AnnieHandler {
             controller.execute();
 
             bpHandler = new BoilerplateHandler(this);
+            
+            //Load paragraphs and initialize Lists
             bpHandler.initializeParagraphs();
-            //bpHandler.findPossibleConversions();
+            
+            //Traverse BP-Annotations and add to parList
+            bpHandler.findPossibleConversions();
+            
+            //convert annotated sentences to matching BPs, store strings
+            bpHandler.convertBPs();
 
         } catch (ExecutionException | MalformedURLException | ResourceInstantiationException ex) {
             Logger.getLogger(AnnieHandler.class.getName()).log(Level.SEVERE, null, ex);

@@ -38,6 +38,13 @@ public class Main {
         java.awt.EventQueue.invokeLater(() -> {
             gui = new R2BMainWindow();
 
+            gui.getPbLabel1().setText("0");
+            gui.getPbLabel2().setText("0");
+            gui.getConfirmButton().setEnabled(false);
+            gui.getConvertButton().setEnabled(false);
+            gui.getSkipButton().setEnabled(false);
+            gui.getjProgressBar1().setStringPainted(true);
+
             gui.getLoadButton().addActionListener((ActionEvent e) -> {
                 dialog.showOpenDialog(gui);
                 inputFile = dialog.getSelectedFile();
@@ -50,18 +57,8 @@ public class Main {
                     System.out.println("Loaded:" + inputFile.getName());
                     dialog.setSelectedFile(null);
                 }
+                gui.getConvertButton().setEnabled(true);
             });
-
-            gui.getConvertButton().addActionListener((ActionEvent e) -> {
-                gui.getConfirmButton().setEnabled(true);
-                annie.execute(); 
-            });
-
-            gui.getjProgressBar1().setStringPainted(true);
-
-            gui.getPbLabel1().setText("0");
-            gui.getPbLabel2().setText("0");
-            gui.getConfirmButton().setEnabled(false);
 
             gui.getExportButton().addActionListener((ActionEvent e) -> {
                 dialog.showSaveDialog(gui);
@@ -71,8 +68,25 @@ public class Main {
                 }
                 dialog.setSelectedFile(null);
             });
+
+            gui.getConvertButton().addActionListener((ActionEvent e) -> {
+                annie.execute();
+                gui.getConfirmButton().setEnabled(true);
+                gui.getSkipButton().setEnabled(true);
+            });
+
+            gui.getSkipButton().addActionListener((ActionEvent e) -> {
+                annie.bpHandler.loadNextReq();
+            });
+
+            gui.getConfirmButton().addActionListener((ActionEvent e) -> {
+                annie.bpHandler.storeProcessedReq();
+                annie.bpHandler.loadNextReq();
+            });
+
             gui.setVisible(true);
             System.out.println("GUI geladen.");
+
         });
     }
 }

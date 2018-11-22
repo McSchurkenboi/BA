@@ -1,6 +1,7 @@
 
 import gate.Annotation;
 import gate.AnnotationSet;
+import gate.FeatureMap;
 import gate.Utils;
 import java.awt.event.ActionEvent;
 import java.io.BufferedWriter;
@@ -33,10 +34,7 @@ class BoilerplateHandler {
 
     public BoilerplateHandler(AnnieHandler annie) {
         this.annie = annie;
-        Main.gui.getConfirmButton().addActionListener((ActionEvent e) -> {
-            storeProcessedReq();
-            loadNextReq();
-        });
+
     }
 
     public void initializeParagraphs() {
@@ -51,7 +49,7 @@ class BoilerplateHandler {
 
         AnnotationSet annotations = annie.doc.getAnnotations().get("Sentence");
 
-        for (Annotation anno : annotations) {
+        annotations.forEach((anno) -> {
             //Initialize parList
             LinkedList<Annotation> liste = new LinkedList<>();
             liste.add(anno);
@@ -63,11 +61,10 @@ class BoilerplateHandler {
             outputList.add(output);
 
             System.out.println("Satz eingefügt: " + Utils.cleanStringFor(annie.doc, anno));
-        }
+        });
 
         Main.gui.getConvertButton().setEnabled(false);
         //Load first element to the GUI
-        loadNextReq();
 
         /*    //For each sentence, a list of possible BP conversions is created, first element is source sentence
         LinkedList sentences = new LinkedList(annie.doc.getAnnotations().get(new HashSet<>(Arrays.asList("Sentence"))));
@@ -98,11 +95,120 @@ class BoilerplateHandler {
     //Fill parList with possible conversions
     public void findPossibleConversions() {
 
-        for (Annotation anno : annie.parList.get(currentReq)) {
+        //Traverse each paragraph in parList
+        annie.parList.forEach((paragraph) -> {
 
+            //TODO reqgular expression BoilerplateXXX
+            AnnotationSet bpSet = annie.doc.getAnnotations().get("Boilerplate65c");
+
+            //find matching BPs within span of paragraph
+            bpSet.stream().filter((bpAnno) -> (bpAnno.withinSpanOf(paragraph.get(0)))).forEachOrdered((e) -> paragraph.add(e));
+            bpSet.stream().filter((bpAnno) -> (bpAnno.withinSpanOf(paragraph.get(0)))).forEachOrdered((e) -> System.out.println(e));
+        });
+
+    }
+
+    //right now converts each BP possibilities sentencewise, 
+    //later maybe uses knowledge about all possible BPs and finds best, so just one conversion is made and stored to outputList
+    public void convertBPs() {
+
+        int i = 0;
+
+        for (LinkedList<Annotation> paragraph : annie.parList) {
+            Iterator<Annotation> it = paragraph.iterator();
+            it.next();
+
+            while (it.hasNext()) {
+                outputList.get(i).add(formatBP65c(it.next()));
+            }
+            i++;
         }
 
-        /*
+        loadNextReq();
+    }
+
+    public String formatBP65c(Annotation an) {
+        FeatureMap map = an.getFeatures();
+        return "The complete system <<" + map.get("completeSystemNameText") + ">> shall <<" + map.get("functionDescriptionText") + ">>. \n";
+//return "The " //+ Utils.stringFor(annie.doc, an.getFeatures().get("CompleteSystemNameText"));
+    }
+
+    public void skip(){
+        currentReq++;
+    }
+    
+    public void storeProcessedReq() {
+        //If changed, than append processed requirement to the output List
+        if (!"".equals(Main.gui.getOutputReq().getText())) {
+            outputList.get(currentReq).set(0, Main.gui.getOutputReq().getText());
+        }
+        Main.gui.getjProgressBar1().setValue(++currentReq);
+
+    }
+
+    public void loadNextReq() {
+
+        Main.gui.getPbLabel1().setText(String.valueOf(currentReq));
+
+        //Load next sentence and its annotations from parList
+        if (currentReq < annie.parList.size()) {
+            Iterator<String> it = outputList.get(currentReq).iterator();
+
+            //Show the source sentence in the upper TextField
+            Main.gui.getInputReq().setText(it.next());
+
+            Main.gui.getOutputReq().setText("");
+
+            //If no BS were annotated
+            if (!it.hasNext()) {
+                Main.gui.getOutputReq().setText("No boilerplate conversions were found.");
+                Main.gui.getConfirmButton().setEnabled(false);
+//                Main.gui.getjProgressBar1().setValue(++currentReq);
+
+            } else {
+                //Iterate over the BP annotated for this sentence and print them as suggestions
+                while (it.hasNext()) {
+                    Main.gui.getOutputReq().append(it.next());
+                }
+                Main.gui.getConfirmButton().setEnabled(true);
+            }
+
+        } else {
+            //End of requirements reached
+            Main.gui.getInputReq().setText("All requirements processed. \n Please press export to save the results.");
+            Main.gui.getOutputReq().setText("");
+
+            Main.gui.getConfirmButton().setEnabled(false);
+            Main.gui.getSkipButton().setEnabled(false);
+
+        }
+    }
+
+    public void exportToFileSystem() {
+        try {
+
+            FileOutputStream fos = new FileOutputStream(Main.outputFile);
+            BufferedWriter bos = new BufferedWriter(new OutputStreamWriter(fos));
+
+            for (LinkedList<String> list : outputList) {
+                bos.write(list.getFirst());
+                bos.newLine();
+            }
+
+            bos.close();
+            System.out.println("Saved to file:" + Main.outputFile);
+
+        } catch (IOException ex) {
+            Logger.getLogger(AnnieHandler.class
+                    .getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+}
+
+//OLD: findBPAnnotations
+
+/*
         //Load List of BPs for a sentence
         LinkedList<Annotation> bpList = (LinkedList<Annotation>) annie.parList.get(0);
         //bpList.add("Boilerplate65c");
@@ -141,55 +247,5 @@ class BoilerplateHandler {
             AnnotationSet annSet = doc.getAnnotations("");
             annotationsToWrite.addAll(annSet.get("Boilerplate65c"));
             outputProcessedReq(doc.toXml(annotationsToWrite));
-         */
+ */
         //System.out.println(corpus.get(0).toXml());
-    }
-
-    private void storeProcessedReq() {
-        //If changed, than append processed requirement to the output List
-        if (!"".equals(Main.gui.getOutputReq().getText())) {
-            outputList.get(currentReq).set(0,Main.gui.getOutputReq().getText());
-        }
-        Main.gui.getjProgressBar1().setValue(++currentReq);
-    }
-
-    private void loadNextReq() {
-        Main.gui.getPbLabel1().setText(String.valueOf(currentReq));
-
-        //Load next sentence and its annotations from parList
-        if (currentReq < annie.parList.size()) {
-            Iterator<String> it = outputList.get(currentReq).iterator();
-            
-            //Show the source sentence in the upper TextField
-            Main.gui.getInputReq().setText(it.next());
-
-            //Iterate over the BP annotated for this sentence and print them as suggestions
-            while (it.hasNext()) {
-                Main.gui.getOutputReq().append(it.next());
-            }
-        } else {
-            Main.gui.getInputReq().setText("All requirements processed. \n Please press export to save the results.");
-            Main.gui.getConfirmButton().setEnabled(false);
-
-        }
-    }
-
-    public void exportToFileSystem() {
-        try {
-
-            FileOutputStream fos = new FileOutputStream(Main.outputFile);
-            BufferedWriter bos = new BufferedWriter(new OutputStreamWriter(fos));
-            
-            for (LinkedList<String> list : outputList) {
-                bos.write(list.getFirst());
-                bos.newLine();
-            }
-
-            bos.close();
-            System.out.println("Saved to file:" + Main.outputFile);
-        } catch (IOException ex) {
-            Logger.getLogger(AnnieHandler.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-    }
-}
