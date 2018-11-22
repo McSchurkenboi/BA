@@ -133,10 +133,10 @@ class BoilerplateHandler {
 //return "The " //+ Utils.stringFor(annie.doc, an.getFeatures().get("CompleteSystemNameText"));
     }
 
-    public void skip(){
-        currentReq++;
+    public void skip() {
+        Main.gui.getjProgressBar1().setValue(++currentReq);
     }
-    
+
     public void storeProcessedReq() {
         //If changed, than append processed requirement to the output List
         if (!"".equals(Main.gui.getOutputReq().getText())) {
