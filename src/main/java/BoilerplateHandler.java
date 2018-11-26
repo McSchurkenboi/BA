@@ -64,6 +64,8 @@ class BoilerplateHandler {
         });
 
         Main.gui.getConvertButton().setEnabled(false);
+        Main.gui.getjProgressBar1().setMaximum(sentenceCount);
+        Main.gui.getPbLabel2().setText(String.valueOf(sentenceCount));
         //Load first element to the GUI
 
         /*    //For each sentence, a list of possible BP conversions is created, first element is source sentence
@@ -88,8 +90,7 @@ class BoilerplateHandler {
         }
          */
         //System.out.println("Element:" + liste.getFirst());
-        Main.gui.getjProgressBar1().setMaximum(sentenceCount);
-        Main.gui.getPbLabel2().setText(String.valueOf(sentenceCount));
+        
     }
 
     //Fill parList with possible conversions
@@ -178,6 +179,7 @@ class BoilerplateHandler {
 
             Main.gui.getConfirmButton().setEnabled(false);
             Main.gui.getSkipButton().setEnabled(false);
+            Main.gui.getExportButton().setEnabled(true);
 
         }
     }

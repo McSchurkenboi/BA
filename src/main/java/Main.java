@@ -40,9 +40,13 @@ public class Main {
 
             gui.getPbLabel1().setText("0");
             gui.getPbLabel2().setText("0");
-            gui.getConfirmButton().setEnabled(false);
-            gui.getConvertButton().setEnabled(false);
+            
+            gui.getConfirmButton().setEnabled(false); 
             gui.getSkipButton().setEnabled(false);
+            
+            gui.getConvertButton().setEnabled(false);
+            gui.getExportButton().setEnabled(false);
+            
             gui.getjProgressBar1().setStringPainted(true);
 
             gui.getLoadButton().addActionListener((ActionEvent e) -> {
