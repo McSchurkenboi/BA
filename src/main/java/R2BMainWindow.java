@@ -31,6 +31,7 @@ public class R2BMainWindow extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        reqSelectionButtons = new javax.swing.ButtonGroup();
         loadButton = new javax.swing.JButton();
         exportButton = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
@@ -47,6 +48,13 @@ public class R2BMainWindow extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         ConfirmButton = new javax.swing.JButton();
         skipButton = new javax.swing.JButton();
+        req1Button = new javax.swing.JRadioButton();
+        req2Button = new javax.swing.JRadioButton();
+        req3Button = new javax.swing.JRadioButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        OutputReq2 = new javax.swing.JTextArea();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        OutputReq3 = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Requirements2Boilerplate-Converter");
@@ -73,7 +81,7 @@ public class R2BMainWindow extends javax.swing.JFrame {
 
         jLabel1.setText("Source Requirement:");
 
-        jLabel2.setText("Suggested Requirement:");
+        jLabel2.setText("Suggested Requirements:");
 
         jLabel3.setText("Progress:");
 
@@ -81,8 +89,9 @@ public class R2BMainWindow extends javax.swing.JFrame {
         InputReq.setRows(5);
         jScrollPane1.setViewportView(InputReq);
 
-        OutputReq.setColumns(20);
+        OutputReq.setColumns(10);
         OutputReq.setRows(5);
+        OutputReq.setMinimumSize(new java.awt.Dimension(6, 22));
         jScrollPane2.setViewportView(OutputReq);
 
         convertButton.setText("Convert");
@@ -102,42 +111,77 @@ public class R2BMainWindow extends javax.swing.JFrame {
 
         skipButton.setText("Skip");
 
+        reqSelectionButtons.add(req1Button);
+        req1Button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                req1ButtonActionPerformed(evt);
+            }
+        });
+
+        reqSelectionButtons.add(req2Button);
+
+        reqSelectionButtons.add(req3Button);
+
+        OutputReq2.setColumns(20);
+        OutputReq2.setRows(5);
+        jScrollPane3.setViewportView(OutputReq2);
+
+        OutputReq3.setColumns(20);
+        OutputReq3.setRows(5);
+        jScrollPane4.setViewportView(OutputReq3);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(pbLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(pbLabel2))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel3))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(pbLabel2)
+                        .addGap(15, 15, 15))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(skipButton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(ConfirmButton))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel1)
+                                    .addComponent(jLabel3))
+                                .addGap(22, 22, 22))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jProgressBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(loadButton)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(convertButton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 262, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(exportButton))
                             .addComponent(jScrollPane1)
-                            .addComponent(jScrollPane2))))
-                .addGap(25, 25, 25))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 540, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING)))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(req1Button)
+                                    .addComponent(req2Button)
+                                    .addComponent(req3Button))
+                                .addGap(11, 11, 11)))))
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(skipButton)
+                .addGap(18, 18, 18)
+                .addComponent(ConfirmButton)
+                .addGap(21, 21, 21))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -154,13 +198,21 @@ public class R2BMainWindow extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(req1Button)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(9, 9, 9)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(req2Button)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(11, 11, 11)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(req3Button)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(skipButton)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(ConfirmButton)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
+                    .addComponent(ConfirmButton))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jProgressBar1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -198,6 +250,10 @@ public class R2BMainWindow extends javax.swing.JFrame {
     private void ConfirmButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConfirmButtonActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_ConfirmButtonActionPerformed
+
+    private void req1ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_req1ButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_req1ButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -334,6 +390,8 @@ public class R2BMainWindow extends javax.swing.JFrame {
     private javax.swing.JButton ConfirmButton;
     private javax.swing.JTextArea InputReq;
     private javax.swing.JTextArea OutputReq;
+    private javax.swing.JTextArea OutputReq2;
+    private javax.swing.JTextArea OutputReq3;
     private javax.swing.JButton convertButton;
     private javax.swing.JButton exportButton;
     private javax.swing.JLabel jLabel1;
@@ -343,9 +401,15 @@ public class R2BMainWindow extends javax.swing.JFrame {
     private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JButton loadButton;
     private javax.swing.JLabel pbLabel1;
     private javax.swing.JLabel pbLabel2;
+    private javax.swing.JRadioButton req1Button;
+    private javax.swing.JRadioButton req2Button;
+    private javax.swing.JRadioButton req3Button;
+    private javax.swing.ButtonGroup reqSelectionButtons;
     private javax.swing.JButton skipButton;
     // End of variables declaration//GEN-END:variables
 }
