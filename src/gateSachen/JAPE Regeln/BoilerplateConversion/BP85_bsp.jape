@@ -1,0 +1,35 @@
+Phase: BoilerPlateConversion
+Input: Token Split Condition ConditionalActor FunctionDescription
+Options: control = appelt  debug = true
+
+Rule: BP85_bsp
+(
+
+({Token, !Split})*
+({Condition})
+({Token, !Split})*
+({ConditionalActor})
+({Token, !Split})*
+({FunctionDescription})
+({Token, !Split})*
+
+)
+:ann
+
+--> 
+:ann.Boilerplate85 = {rule=BP85_bsp, 
+text=:ann@cleanString, 
+conditionText=:ann.Condition@cleanString,
+conditionalActorText=:ann.ConditionalActor@cleanString,
+functionDescriptionText=:ann.FunctionDescription@cleanString
+}
+
+
+
+/*
+
+Beachte: im Input muss die Annotation Type "Split" stehen!
+
+{Token.kind == punctuation} --> damit funktioniert es nicht
+
+*/

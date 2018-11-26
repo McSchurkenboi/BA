@@ -298,10 +298,17 @@
         </gate.util.persistence.AnalyserRunningStrategyPersistence>
         <gate.util.persistence.AnalyserRunningStrategyPersistence>
           <runMode>1</runMode>
+          <featureName></featureName>
+          <featureValue></featureValue>
           <pr class="gate.util.persistence.LanguageAnalyserPersistence">
             <runtimeParams class="gate.util.persistence.MapPersistence">
               <mapType>gate.util.SimpleFeatureMapImpl</mapType>
-              <localMap/>
+              <localMap>
+                <entry>
+                  <string>outputASName</string>
+                  <string>Boilerplates</string>
+                </entry>
+              </localMap>
             </runtimeParams>
             <resourceType>gate.creole.Transducer</resourceType>
             <resourceName>JAPE Transducer 00014</resourceName>

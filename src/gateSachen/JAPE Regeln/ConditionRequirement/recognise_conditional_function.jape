@@ -4,51 +4,63 @@ Options: control = appelt
 
 Rule: ConditionalRequirement
 
-
+(
 
 ({Token, !Split})*
 
-(
-	
-(
-	({Token.string ==~  "[Aa]s"}
-	{Token.string == "soon"}
-	{Token.string == "as"})
+(({Token.string ==~  "[Aa]s"}
+{Token.string == "soon"}
+{Token.string == "as"}) 
 
-	|
+({Token, !Split})+
 
-	({Token.string ==~ "[Ww]hen"})
-
-	|
-
-	({Token.string ==~ "[Ii]f"})
-
-	|
-
-	({Token.string ==~ "[Aa]s"}
-	{Token.string == "long"}
-	{Token.string == "as"}) 
 )
 
-({Token, !Token.string==","})*
+|
 
-):condition
 
 (
-{Token.string==","}
+
+({Token, !Split})*
+
+({Token.string ==~ "[Ww]hen"})
+
+({Token, !Split})+
+
 )
 
+|
+
 (
 
-({Token, !Token.string=="shall"})*
+({Token, !Split})*
 
-):conditionalactor
+({Token.string ==~ "[Ii]f"})
 
+({Token, !Split})+
 
+)
+
+|
+
+(
+
+({Token, !Split})*
+
+({Token.string ==~ "[Aa]s"}
+{Token.string == "long"}
+{Token.string == "as"})
+
+({Token, !Split})+
+)
+
+) 
+:ann
 
 -->
-:condition.Condition = {},
-:conditionalactor.ConditionalActor = {}
+:ann.ConditionalRequirement = {}
+
+
 /*
 
 

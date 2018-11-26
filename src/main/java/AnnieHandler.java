@@ -13,11 +13,8 @@ import gate.creole.ResourceInstantiationException;
 import gate.creole.ResourceReference;
 import gate.util.GateException;
 import gate.util.persistence.PersistenceManager;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -105,7 +102,7 @@ public class AnnieHandler {
 
         System.out.println(output);
         // Write output files
-        Main.gui.getOutputReq().setText(output);
+        Main.gui.getOutputReq1().setText(output);
 
     }
 

@@ -1,7 +1,9 @@
 
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JProgressBar;
+import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
 
 /*
@@ -41,7 +43,7 @@ public class R2BMainWindow extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         InputReq = new javax.swing.JTextArea();
         jScrollPane2 = new javax.swing.JScrollPane();
-        OutputReq = new javax.swing.JTextArea();
+        OutputReq1 = new javax.swing.JTextArea();
         convertButton = new javax.swing.JButton();
         pbLabel1 = new javax.swing.JLabel();
         pbLabel2 = new javax.swing.JLabel();
@@ -89,10 +91,10 @@ public class R2BMainWindow extends javax.swing.JFrame {
         InputReq.setRows(5);
         jScrollPane1.setViewportView(InputReq);
 
-        OutputReq.setColumns(10);
-        OutputReq.setRows(5);
-        OutputReq.setMinimumSize(new java.awt.Dimension(6, 22));
-        jScrollPane2.setViewportView(OutputReq);
+        OutputReq1.setColumns(10);
+        OutputReq1.setRows(5);
+        OutputReq1.setMinimumSize(new java.awt.Dimension(6, 22));
+        jScrollPane2.setViewportView(OutputReq1);
 
         convertButton.setText("Convert");
 
@@ -298,12 +300,12 @@ public class R2BMainWindow extends javax.swing.JFrame {
         this.InputReq = InputReq;
     }
 
-    public JTextArea getOutputReq() {
-        return OutputReq;
+    public JTextArea getOutputReq1() {
+        return OutputReq1;
     }
 
-    public void setOutputReq(JTextArea OutputReq) {
-        this.OutputReq = OutputReq;
+    public void setOutputReq1(JTextArea OutputReq1) {
+        this.OutputReq1 = OutputReq1;
     }
 
     public JButton getExportButton() {
@@ -386,10 +388,59 @@ public class R2BMainWindow extends javax.swing.JFrame {
         this.pbLabel2 = pbLabel2;
     }
 
+    public JTextArea getOutputReq2() {
+        return OutputReq2;
+    }
+
+    public void setOutputReq2(JTextArea OutputReq2) {
+        this.OutputReq2 = OutputReq2;
+    }
+
+    public JTextArea getOutputReq3() {
+        return OutputReq3;
+    }
+
+    public void setOutputReq3(JTextArea OutputReq3) {
+        this.OutputReq3 = OutputReq3;
+    }
+
+    public JRadioButton getReq1Button() {
+        return req1Button;
+    }
+
+    public void setReq1Button(JRadioButton req1Button) {
+        this.req1Button = req1Button;
+    }
+
+    public JRadioButton getReq2Button() {
+        return req2Button;
+    }
+
+    public void setReq2Button(JRadioButton req2Button) {
+        this.req2Button = req2Button;
+    }
+
+    public JRadioButton getReq3Button() {
+        return req3Button;
+    }
+
+    public void setReq3Button(JRadioButton req3Button) {
+        this.req3Button = req3Button;
+    }
+
+    public ButtonGroup getReqSelectionButtons() {
+        return reqSelectionButtons;
+    }
+
+    public void setReqSelectionButtons(ButtonGroup reqSelectionButtons) {
+        this.reqSelectionButtons = reqSelectionButtons;
+    }
+
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton ConfirmButton;
     private javax.swing.JTextArea InputReq;
-    private javax.swing.JTextArea OutputReq;
+    private javax.swing.JTextArea OutputReq1;
     private javax.swing.JTextArea OutputReq2;
     private javax.swing.JTextArea OutputReq3;
     private javax.swing.JButton convertButton;

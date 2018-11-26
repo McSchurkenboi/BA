@@ -16,7 +16,15 @@ The system should be able handle the concurrent access of the maximum capacity o
 
 The system shall keep a log of all the errors.
 
+Panic functionality on vehicle is activated by pressing Lock and Unlock button together.
+
+The functioning of RKE shall be available till battery voltage is greater than 2.53 Volts.
+
 Our product shall be able to record all of the data transferred to the cellular device.
+
+Requirements correlated to functional safety are described and handled in risk and safety analysis.
+
+The remote key functionality has no emergency run capability.
 
 The gathered data shall be displayed to the user in a very visually satisfying fashion.
 

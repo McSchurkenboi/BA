@@ -2,8 +2,9 @@
 import gate.Annotation;
 import gate.AnnotationSet;
 import gate.FeatureMap;
+import gate.SimpleAnnotationSet;
 import gate.Utils;
-import java.awt.event.ActionEvent;
+import gate.annotation.AnnotationSetImpl;
 import java.io.BufferedWriter;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -12,7 +13,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -30,11 +31,14 @@ class BoilerplateHandler {
 
     int currentReq = -1;
     private final AnnieHandler annie;
-    public ArrayList<LinkedList<String>> outputList;
+    private ArrayList<LinkedList<String>> outputList;
+//    private Map<String, String> boilerplateMap;
 
     public BoilerplateHandler(AnnieHandler annie) {
         this.annie = annie;
-
+//        for (int i = 0; i < 100; i++) {
+//            boilerplateMap.put("Boilerplate" + i, null);
+//        }
     }
 
     public void initializeParagraphs() {
@@ -90,37 +94,44 @@ class BoilerplateHandler {
         }
          */
         //System.out.println("Element:" + liste.getFirst());
-        
     }
 
     //Fill parList with possible conversions
     public void findPossibleConversions() {
-
         //Traverse each paragraph in parList
-        annie.parList.forEach((paragraph) -> {
 
-            //TODO reqgular expression BoilerplateXXX
-            AnnotationSet bpSet = annie.doc.getAnnotations().get("Boilerplate65c");
+        //TODO reqgular expression BoilerplateXXX
+        AnnotationSet bpSet = annie.doc.getAnnotations("Boilerplates").get();
+
+        annie.parList.forEach((paragraph) -> {
 
             //find matching BPs within span of paragraph
             bpSet.stream().filter((bpAnno) -> (bpAnno.withinSpanOf(paragraph.get(0)))).forEachOrdered((e) -> paragraph.add(e));
-            //bpSet.stream().filter((bpAnno) -> (bpAnno.withinSpanOf(paragraph.get(0)))).forEachOrdered((e) -> System.out.println(e));
         });
 
     }
 
-    //right now converts each BP possibilities sentencewise, 
+    //converts for each BP possibility sentencewise, 
     //later maybe uses knowledge about all possible BPs and finds best, so just one conversion is made and stored to outputList
     public void convertBPs() {
 
         int i = 0;
 
+        //for each paragraph, the sentence is processed matching to the found boilerplate annotations
         for (LinkedList<Annotation> paragraph : annie.parList) {
             Iterator<Annotation> it = paragraph.iterator();
             it.next();
 
             while (it.hasNext()) {
-                outputList.get(i).add(formatBP65c(it.next()));
+                Annotation an = it.next();
+                //all possible BPs, other way might be reflection/java maps with BP names and function pointers
+                switch (an.getType()) {
+                    case "Boilerplate65c":
+                        outputList.get(i).add(formatBP65c(an));
+                        break;
+                    case "Boilerplate85":
+                        outputList.get(i).add(formatBP85(an));
+                }
             }
             i++;
         }
@@ -128,22 +139,32 @@ class BoilerplateHandler {
         loadNextReq();
     }
 
-    public String formatBP65c(Annotation an) {
+    private String formatBP65c(Annotation an) {
         FeatureMap map = an.getFeatures();
-        return "The complete system <<" + map.get("completeSystemNameText") + ">> shall <<" + map.get("functionDescriptionText") + ">>. \n";
+        return "The complete system <<" + map.get("completeSystemNameText") + ">> shall <<" + map.get("functionDescriptionText") + ">>.";
 //return "The " //+ Utils.stringFor(annie.doc, an.getFeatures().get("CompleteSystemNameText"));
     }
 
-
-    public void storeProcessedReq() {
-        //If changed, than append processed requirement to the output List
-        if (!"".equals(Main.gui.getOutputReq().getText())) {
-            outputList.get(currentReq).set(0, Main.gui.getOutputReq().getText());
-        }
-        //Main.gui.getjProgressBar1().setValue(++currentReq);
-
+    private String formatBP85(Annotation an) {
+        FeatureMap map = an.getFeatures();
+        return "Under the condition: <<" + map.get("conditionText") + ">> the actor: <<" + map.get("conditionalActorText") + ">> shall <<" + map.get("functionDescriptionText") + ">>."; 
     }
 
+    //saves changes from the GUI to the outputList
+    public void storeProcessedReq() {
+        //If changed, than append selected requirement from the text boxes to the output List
+        if (!"".equals(Main.gui.getOutputReq1().getText())) {
+            if (Main.gui.getReq1Button().isSelected()) {
+                outputList.get(currentReq).set(0, Main.gui.getOutputReq1().getText());
+            } else if (Main.gui.getReq2Button().isSelected()) {
+                outputList.get(currentReq).set(0, Main.gui.getOutputReq2().getText());
+            } else if (Main.gui.getReq3Button().isSelected()) {
+                outputList.get(currentReq).set(0, Main.gui.getOutputReq3().getText());
+            }
+        }
+    }
+
+    //load next paragraph to the GUI
     public void loadNextReq() {
         Main.gui.getjProgressBar1().setValue(++currentReq);
 
@@ -156,26 +177,34 @@ class BoilerplateHandler {
             //Show the source sentence in the upper TextField
             Main.gui.getInputReq().setText(it.next());
 
-            Main.gui.getOutputReq().setText("");
+            Main.gui.getOutputReq1().setText("");
+            Main.gui.getOutputReq2().setText("");
+            Main.gui.getOutputReq3().setText("");
 
-            //If no BS were annotated
+            //If no BPs were annotated
             if (!it.hasNext()) {
-                Main.gui.getOutputReq().setText("No boilerplate conversions were found.");
+                Main.gui.getOutputReq1().setText("No boilerplate conversions were found.");
                 Main.gui.getConfirmButton().setEnabled(false);
 //                Main.gui.getjProgressBar1().setValue(++currentReq);
 
             } else {
                 //Iterate over the BP annotated for this sentence and print them as suggestions
-                while (it.hasNext()) {
-                    Main.gui.getOutputReq().append(it.next());
+                Main.gui.getOutputReq1().setText(it.next());
+
+                if (it.hasNext()) {
+                    Main.gui.getOutputReq2().setText(it.next());
                 }
+                if (it.hasNext()) {
+                    Main.gui.getOutputReq3().setText(it.next());
+                }
+
                 Main.gui.getConfirmButton().setEnabled(true);
             }
 
         } else {
             //End of requirements reached
             Main.gui.getInputReq().setText("All requirements processed. \n Please press export to save the results.");
-            Main.gui.getOutputReq().setText("");
+            Main.gui.getOutputReq1().setText("");
 
             Main.gui.getConfirmButton().setEnabled(false);
             Main.gui.getSkipButton().setEnabled(false);
@@ -204,6 +233,7 @@ class BoilerplateHandler {
         }
 
     }
+
 }
 
 //OLD: findBPAnnotations

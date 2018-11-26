@@ -6,43 +6,52 @@ Rule: ConditionalRequirement
 
 (
 
+({Token, !Split})*
+
 (({Token.string ==~  "[Aa]s"}
 {Token.string == "soon"}
 {Token.string == "as"}) 
 
-({Token})+
+({Token, !Split})+
 
-{Split}
 )
 
 |
 
 
-(({Token.string == "When"})
+(
 
-({Token})+
+({Token, !Split})*
 
-{Split}
+({Token.string ==~ "[Ww]hen"})
+
+({Token, !Split})+
+
 )
 
 |
 
-(({Token.string ==~ "[Ii]f"})
+(
 
-({Token})+
+({Token, !Split})*
 
-{Split}
+({Token.string ==~ "[Ii]f"})
+
+({Token, !Split})+
+
 )
 
 |
 
-(({Token.string ==~ "[Aa]s"}
+(
+
+({Token, !Split})*
+
+({Token.string ==~ "[Aa]s"}
 {Token.string == "long"}
 {Token.string == "as"})
 
-({Token})+
-
-{Split}
+({Token, !Split})+
 )
 
 ) 
