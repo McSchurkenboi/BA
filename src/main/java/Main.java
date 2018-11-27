@@ -20,6 +20,11 @@ public class Main {
     static File inputFile, outputFile;
     static AnnieHandler annie;
 
+    /**
+     *
+     * @param args
+     * @throws IOException
+     */
     public static void main(String[] args) throws IOException {
 
         initGUI();
@@ -31,6 +36,11 @@ public class Main {
         //outputFile = new File("C:\\Users\\rittfe1\\Desktop\\output.txt");
     }
 
+    /**
+     * defines functions for the GUI elements and builds initial config
+     * 
+     * shows GUI
+     */
     public static void initGUI() {
         JFileChooser dialog = new JFileChooser();
         //Events
@@ -40,13 +50,13 @@ public class Main {
 
             gui.getPbLabel1().setText("0");
             gui.getPbLabel2().setText("0");
-            
-            gui.getConfirmButton().setEnabled(false); 
+
+            gui.getConfirmButton().setEnabled(false);
             gui.getSkipButton().setEnabled(false);
-            
+
             gui.getConvertButton().setEnabled(false);
             gui.getExportButton().setEnabled(false);
-            
+
             gui.getjProgressBar1().setStringPainted(true);
 
             gui.getLoadButton().addActionListener((ActionEvent e) -> {

@@ -2,38 +2,47 @@
 import gate.Annotation;
 import gate.AnnotationSet;
 import gate.FeatureMap;
-import gate.SimpleAnnotationSet;
 import gate.Utils;
-import gate.annotation.AnnotationSetImpl;
 import java.io.BufferedWriter;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.Map;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 /**
- *
+ * summarizes BP conversion
  * @author rittfe1
  */
 class BoilerplateHandler {
 
+    /**
+     * keeps track of the current paragraph and contained sentence for
+     * traversing
+     */
     int currentReq = -1;
+
+    /**
+     * the annie system the informations are received from
+     */
     private final AnnieHandler annie;
+
+    /**
+     * stores the clean strings from each paragraph: input sentence, possible
+     * conversions made by BPs
+     */
     private ArrayList<LinkedList<String>> outputList;
 //    private Map<String, String> boilerplateMap;
 
+    /**
+     * creates a new BoilerplateHandler, providing requirement processing to
+     * ReqPad-powered BPs
+     *
+     * @param annie
+     */
     public BoilerplateHandler(AnnieHandler annie) {
         this.annie = annie;
 //        for (int i = 0; i < 100; i++) {
@@ -41,6 +50,12 @@ class BoilerplateHandler {
 //        }
     }
 
+    /**
+     * initializes the paragraph list from Annie Handler (parList) with the
+     * sentence annotation for each paragraph. i.e. the paragraphs are splitted
+     * sentencewise and can now each be traversed by the sentence annotation.
+     * Must be called before BPs can be discovered over the sentences
+     */
     public void initializeParagraphs() {
         //ArrayList with size of sentence count
         int sentenceCount = annie.doc.getAnnotations().get("Sentence").size();
@@ -48,8 +63,6 @@ class BoilerplateHandler {
         annie.parList = new ArrayList<>(sentenceCount);
 
         outputList = new ArrayList<>(sentenceCount);
-//        LinkedList<Annotation> annotations = new LinkedList<>();
-//        annie.doc.getAnnotations().get("Sentence").forEach(a -> annotations.add(a));
 
         AnnotationSet annotations = annie.doc.getAnnotations().get("Sentence");
 
@@ -70,33 +83,12 @@ class BoilerplateHandler {
         Main.gui.getConvertButton().setEnabled(false);
         Main.gui.getjProgressBar1().setMaximum(sentenceCount);
         Main.gui.getPbLabel2().setText(String.valueOf(sentenceCount));
-        //Load first element to the GUI
-
-        /*    //For each sentence, a list of possible BP conversions is created, first element is source sentence
-        LinkedList sentences = new LinkedList(annie.doc.getAnnotations().get(new HashSet<>(Arrays.asList("Sentence"))));
-        Iterator it = sentences.iterator();
-        int i = 0;
-        for (Object o : sentences) {
-            LinkedList<String> liste = new LinkedList<>();
-            liste.add((String) o);
-            annie.parList.add(i, liste);
-            i++;
-        }
-
-        //annie.doc.getAnnotations().get(new HashSet<>(Arrays.asList("Sentence"))).forEach(a -> System.err.format("%s - \"%s\" [%d to %d]\n",
-        //        a.getType(), Utils.stringFor(annie.doc, a),
-        //        a.getStartNode().getOffset(), a.getEndNode().getOffset()));
-        //LinkedList liste = new LinkedList();
-        for (LinkedList o : annie.parList) {
-            for(String ob : o){
-                System.out.println(ob);
-            }
-        }
-         */
-        //System.out.println("Element:" + liste.getFirst());
     }
 
-    //Fill parList with possible conversions
+    /**
+     * Fill parList with possible BP conversions, discovers BP annotaion within
+     * span of each sentence
+     */
     public void findPossibleConversions() {
         //Traverse each paragraph in parList
 
@@ -111,8 +103,11 @@ class BoilerplateHandler {
 
     }
 
-    //converts for each BP possibility sentencewise, 
-    //later maybe uses knowledge about all possible BPs and finds best, so just one conversion is made and stored to outputList
+    /**
+     * converts for each BP possibility sentencewise, later maybe uses knowledge
+     * about all possible BPs and finds best, so just one conversion is made and
+     * stored to outputList
+     */
     public void convertBPs() {
 
         int i = 0;
@@ -124,6 +119,7 @@ class BoilerplateHandler {
 
             while (it.hasNext()) {
                 Annotation an = it.next();
+
                 //all possible BPs, other way might be reflection/java maps with BP names and function pointers
                 switch (an.getType()) {
                     case "Boilerplate65c":
@@ -139,19 +135,38 @@ class BoilerplateHandler {
         loadNextReq();
     }
 
+    /**
+     * fills BP65c with required information
+     *
+     * @param an
+     * @return the filled boilerplate with the features required from an as a
+     * string
+     */
     private String formatBP65c(Annotation an) {
         FeatureMap map = an.getFeatures();
         return "The complete system <<" + map.get("completeSystemNameText") + ">> shall <<" + map.get("functionDescriptionText") + ">>.";
-//return "The " //+ Utils.stringFor(annie.doc, an.getFeatures().get("CompleteSystemNameText"));
     }
 
+    /**
+     * fills BP85 with required information
+     *
+     * @param an
+     * @return the filled boilerplate with the features required from an as a
+     * string
+     */
     private String formatBP85(Annotation an) {
         FeatureMap map = an.getFeatures();
-        return "Under the condition: <<" + map.get("conditionText") + ">> the actor: <<" + map.get("conditionalActorText") + ">> shall <<" + map.get("functionDescriptionText") + ">>."; 
+        return "Under the condition: <<" + map.get("conditionText") + ">> the actor: <<" + map.get("conditionalActorText") + ">> shall <<" + map.get("functionDescriptionText") + ">>.";
     }
 
-    //saves changes from the GUI to the outputList
+    /**
+     * saves changes from the GUI to the outputList
+     *
+     * the first element for the sentence in the outputList is overwritten with
+     * the change
+     */
     public void storeProcessedReq() {
+
         //If changed, than append selected requirement from the text boxes to the output List
         if (!"".equals(Main.gui.getOutputReq1().getText())) {
             if (Main.gui.getReq1Button().isSelected()) {
@@ -164,7 +179,11 @@ class BoilerplateHandler {
         }
     }
 
-    //load next paragraph to the GUI
+    /**
+     * load next paragraph to the GUI from the outputList,
+     *
+     * (clean string in upper text field, BP conversions fill the lower fields)
+     */
     public void loadNextReq() {
         Main.gui.getjProgressBar1().setValue(++currentReq);
 
@@ -213,18 +232,19 @@ class BoilerplateHandler {
         }
     }
 
+    /**
+     * exports to the file selected from the Export Button @GUI
+     */
     public void exportToFileSystem() {
         try {
 
             FileOutputStream fos = new FileOutputStream(Main.outputFile);
-            BufferedWriter bos = new BufferedWriter(new OutputStreamWriter(fos));
-
-            for (LinkedList<String> list : outputList) {
-                bos.write(list.getFirst());
-                bos.newLine();
+            try (BufferedWriter bos = new BufferedWriter(new OutputStreamWriter(fos))) {
+                for (LinkedList<String> list : outputList) {
+                    bos.write(list.getFirst());
+                    bos.newLine();
+                }
             }
-
-            bos.close();
             System.out.println("Saved to file:" + Main.outputFile);
 
         } catch (IOException ex) {

@@ -22,20 +22,38 @@ import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * creates GATE resources and manages GATE pipeline
+ *
  * @author rittfe1
  */
 public class AnnieHandler {
 
+    /**
+     * the GATE corpus for the document
+     */
     public Corpus corpus;
+
+    /**
+     * the document loaded in the GUI
+     */
     public Document doc;
+
+    /**
+     * the controller, which consists of an annie module-pipeline
+     */
     public CorpusController controller;
+
+    /**
+     * stores annotation extracted from the annie system (controller), i.e.
+     * sentences and boilerplates
+     */
     public ArrayList<LinkedList<Annotation>> parList;
     BoilerplateHandler bpHandler;
 
+    /**
+     * @TODO create pipeline in java, we use initFromRestore*() instead
+     */
     public void init() {
         try {
 
@@ -54,6 +72,9 @@ public class AnnieHandler {
         }
     }
 
+    /**
+     * create pipeline from restored .gapp file in the program folder
+     */
     public void initFromRestore() {
         try {
 
@@ -71,6 +92,13 @@ public class AnnieHandler {
         }
     }
 
+    /**
+     * starts the ANNIE pipeline in the (GATE-)controller when convert button is
+     * pressed, so that text is annotaded.
+     *
+     * Then buils up internal program structure out of annotations, finds and
+     * converts boilerplates, and stores each of them in internal lists
+     */
     public void execute() {
         try {
             //create Corpus for document from file system
@@ -83,13 +111,13 @@ public class AnnieHandler {
             controller.execute();
 
             bpHandler = new BoilerplateHandler(this);
-            
+
             //Load paragraphs and initialize Lists
             bpHandler.initializeParagraphs();
-            
+
             //Traverse BP-Annotations and add to parList
             bpHandler.findPossibleConversions();
-            
+
             //convert annotated sentences to matching BPs, store strings
             bpHandler.convertBPs();
 
@@ -97,13 +125,4 @@ public class AnnieHandler {
             Logger.getLogger(AnnieHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
-    public void outputProcessedReq(String output) {
-
-        System.out.println(output);
-        // Write output files
-        Main.gui.getOutputReq1().setText(output);
-
-    }
-
 }
