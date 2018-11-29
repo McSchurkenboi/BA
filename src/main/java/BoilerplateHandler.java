@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 
 /**
  * summarizes BP conversion
+ *
  * @author rittfe1
  */
 class BoilerplateHandler {
@@ -188,8 +189,9 @@ class BoilerplateHandler {
         Main.gui.getjProgressBar1().setValue(++currentReq);
 
         Main.gui.getPbLabel1().setText(String.valueOf(currentReq));
+        Main.gui.getReqSelectionButtons().clearSelection();
 
-        //Load next sentence and its annotations from parList
+        //Load next sentence and its annotations from outputList
         if (currentReq < annie.parList.size()) {
             Iterator<String> it = outputList.get(currentReq).iterator();
 
@@ -200,6 +202,10 @@ class BoilerplateHandler {
             Main.gui.getOutputReq2().setText("");
             Main.gui.getOutputReq3().setText("");
 
+            Main.gui.getReq1Button().setEnabled(false);
+            Main.gui.getReq2Button().setEnabled(false);
+            Main.gui.getReq3Button().setEnabled(false);
+
             //If no BPs were annotated
             if (!it.hasNext()) {
                 Main.gui.getOutputReq1().setText("No boilerplate conversions were found.");
@@ -209,12 +215,17 @@ class BoilerplateHandler {
             } else {
                 //Iterate over the BP annotated for this sentence and print them as suggestions
                 Main.gui.getOutputReq1().setText(it.next());
+                Main.gui.getReq1Button().setEnabled(true);
 
                 if (it.hasNext()) {
                     Main.gui.getOutputReq2().setText(it.next());
+                    Main.gui.getReq2Button().setEnabled(true);
+
                 }
                 if (it.hasNext()) {
                     Main.gui.getOutputReq3().setText(it.next());
+                    Main.gui.getReq3Button().setEnabled(true);
+
                 }
 
                 Main.gui.getConfirmButton().setEnabled(true);
