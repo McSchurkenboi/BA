@@ -23,22 +23,21 @@ public class Main {
     /**
      *
      * @param args
-     * @throws IOException
      */
-    public static void main(String[] args) throws IOException {
-
-        initGUI();
+    public static void main(String[] args) {
 
         annie = new AnnieHandler();
 
         annie.initFromRestore();
+
+        initGUI();
 
         //outputFile = new File("C:\\Users\\rittfe1\\Desktop\\output.txt");
     }
 
     /**
      * defines functions for the GUI elements and builds initial config
-     * 
+     *
      * shows GUI
      */
     public static void initGUI() {
@@ -58,6 +57,15 @@ public class Main {
             gui.getExportButton().setEnabled(false);
 
             gui.getjProgressBar1().setStringPainted(true);
+
+            gui.getInputReq().setLineWrap(true);
+            gui.getInputReq().setWrapStyleWord(true);
+            gui.getOutputReq1().setLineWrap(true);
+            gui.getOutputReq1().setWrapStyleWord(true);
+            gui.getOutputReq2().setLineWrap(true);
+            gui.getOutputReq2().setWrapStyleWord(true);
+            gui.getOutputReq3().setLineWrap(true);
+            gui.getOutputReq3().setWrapStyleWord(true);
 
             gui.getLoadButton().addActionListener((ActionEvent e) -> {
                 dialog.showOpenDialog(gui);
@@ -83,12 +91,6 @@ public class Main {
                 dialog.setSelectedFile(null);
             });
 
-            gui.getConvertButton().addActionListener((ActionEvent e) -> {
-                annie.execute();
-                gui.getConfirmButton().setEnabled(true);
-                gui.getSkipButton().setEnabled(true);
-            });
-
             gui.getSkipButton().addActionListener((ActionEvent e) -> {
                 annie.bpHandler.loadNextReq();
             });
@@ -96,6 +98,12 @@ public class Main {
             gui.getConfirmButton().addActionListener((ActionEvent e) -> {
                 annie.bpHandler.storeProcessedReq();
                 annie.bpHandler.loadNextReq();
+            });
+
+            gui.getConvertButton().addActionListener((ActionEvent e) -> {
+                annie.execute();
+                gui.getConfirmButton().setEnabled(true);
+                gui.getSkipButton().setEnabled(true);
             });
 
             gui.setVisible(true);

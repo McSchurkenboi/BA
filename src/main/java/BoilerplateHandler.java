@@ -254,6 +254,7 @@ class BoilerplateHandler {
                 for (LinkedList<String> list : outputList) {
                     bos.write(list.getFirst());
                     bos.newLine();
+                    bos.newLine();
                 }
             }
             System.out.println("Saved to file:" + Main.outputFile);
