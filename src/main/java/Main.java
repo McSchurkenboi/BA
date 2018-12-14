@@ -15,7 +15,7 @@ import javax.swing.JFileChooser;
  * @author rittfe1
  */
 public class Main {
-
+    
     static R2BMainWindow gui;
     static File inputFile, outputFile;
     static AnnieHandler annie;
@@ -25,11 +25,11 @@ public class Main {
      * @param args
      */
     public static void main(String[] args) {
-
+        
         annie = new AnnieHandler();
-
+        
         annie.initFromRestore();
-
+        
         initGUI();
 
         //outputFile = new File("C:\\Users\\rittfe1\\Desktop\\output.txt");
@@ -46,18 +46,18 @@ public class Main {
 
         java.awt.EventQueue.invokeLater(() -> {
             gui = new R2BMainWindow();
-
+            
             gui.getPbLabel1().setText("0");
             gui.getPbLabel2().setText("0");
-
+            
             gui.getConfirmButton().setEnabled(false);
             gui.getSkipButton().setEnabled(false);
-
+            gui.getReviewButton().setEnabled(false);
             gui.getConvertButton().setEnabled(false);
             gui.getExportButton().setEnabled(false);
-
+            
             gui.getjProgressBar1().setStringPainted(true);
-
+            
             gui.getInputReq().setLineWrap(true);
             gui.getInputReq().setWrapStyleWord(true);
             gui.getOutputReq1().setLineWrap(true);
@@ -66,7 +66,7 @@ public class Main {
             gui.getOutputReq2().setWrapStyleWord(true);
             gui.getOutputReq3().setLineWrap(true);
             gui.getOutputReq3().setWrapStyleWord(true);
-
+            
             gui.getLoadButton().addActionListener((ActionEvent e) -> {
                 dialog.showOpenDialog(gui);
                 inputFile = dialog.getSelectedFile();
@@ -81,7 +81,7 @@ public class Main {
                 }
                 gui.getConvertButton().setEnabled(true);
             });
-
+            
             gui.getExportButton().addActionListener((ActionEvent e) -> {
                 dialog.showSaveDialog(gui);
                 outputFile = dialog.getSelectedFile();
@@ -90,25 +90,26 @@ public class Main {
                 }
                 dialog.setSelectedFile(null);
             });
-
+            
             gui.getSkipButton().addActionListener((ActionEvent e) -> {
                 annie.bpHandler.loadNextReq();
             });
-
+            
             gui.getConfirmButton().addActionListener((ActionEvent e) -> {
                 annie.bpHandler.storeProcessedReq();
                 annie.bpHandler.loadNextReq();
             });
-
+            
             gui.getConvertButton().addActionListener((ActionEvent e) -> {
                 annie.execute();
                 gui.getConfirmButton().setEnabled(true);
                 gui.getSkipButton().setEnabled(true);
+                gui.getReviewButton().setEnabled(true);
             });
-
+            
             gui.setVisible(true);
             System.out.println("GUI geladen.");
-
+            
         });
     }
 }

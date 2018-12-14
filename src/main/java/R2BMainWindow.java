@@ -57,7 +57,7 @@ public class R2BMainWindow extends javax.swing.JFrame {
         OutputReq2 = new javax.swing.JTextArea();
         jScrollPane4 = new javax.swing.JScrollPane();
         OutputReq3 = new javax.swing.JTextArea();
-        jButton1 = new javax.swing.JButton();
+        ReviewButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Requirements2Boilerplate-Converter");
@@ -133,10 +133,10 @@ public class R2BMainWindow extends javax.swing.JFrame {
         OutputReq3.setRows(1);
         jScrollPane4.setViewportView(OutputReq3);
 
-        jButton1.setText("Review with OEM");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        ReviewButton.setText("Review with OEM");
+        ReviewButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                ReviewButtonActionPerformed(evt);
             }
         });
 
@@ -186,7 +186,7 @@ public class R2BMainWindow extends javax.swing.JFrame {
                                             .addComponent(req2Button)
                                             .addComponent(req3Button)))
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addComponent(jButton1)
+                                        .addComponent(ReviewButton)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(skipButton)
                                         .addGap(18, 18, 18)
@@ -223,7 +223,7 @@ public class R2BMainWindow extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(skipButton)
                     .addComponent(ConfirmButton)
-                    .addComponent(jButton1))
+                    .addComponent(ReviewButton))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
@@ -238,6 +238,14 @@ public class R2BMainWindow extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    public JButton getReviewButton() {
+        return ReviewButton;
+    }
+
+    public void setReviewButton(JButton ReviewButton) {
+        this.ReviewButton = ReviewButton;
+    }
 
     public JButton getSkipButton() {
         return skipButton;
@@ -267,9 +275,9 @@ public class R2BMainWindow extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_req1ButtonActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void ReviewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ReviewButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_ReviewButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -457,9 +465,9 @@ public class R2BMainWindow extends javax.swing.JFrame {
     private javax.swing.JTextArea OutputReq1;
     private javax.swing.JTextArea OutputReq2;
     private javax.swing.JTextArea OutputReq3;
+    private javax.swing.JButton ReviewButton;
     private javax.swing.JButton convertButton;
     private javax.swing.JButton exportButton;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

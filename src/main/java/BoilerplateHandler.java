@@ -78,7 +78,7 @@ class BoilerplateHandler {
             output.add(Utils.stringFor(annie.doc, anno));
             outputList.add(output);
 
-            System.out.println("Satz eingefügt: " + Utils.cleanStringFor(annie.doc, anno));
+            //System.out.println("Satz eingefügt: " + Utils.cleanStringFor(annie.doc, anno));
         });
 
         Main.gui.getConvertButton().setEnabled(false);
@@ -145,7 +145,7 @@ class BoilerplateHandler {
      */
     private String formatBP65c(Annotation an) {
         FeatureMap map = an.getFeatures();
-        return "The complete system <<" + map.get("completeSystemNameText") + ">> shall <<" + map.get("functionDescriptionText") + ">>.";
+        return "The actor <<" + map.get("completeSystemNameText") + ">> shall <<" + map.get("functionDescriptionText") + ">>.";
     }
 
     /**
@@ -186,15 +186,21 @@ class BoilerplateHandler {
      * (clean string in upper text field, BP conversions fill the lower fields)
      */
     public void loadNextReq() {
-        Main.gui.getjProgressBar1().setValue(++currentReq);
+        currentReq++;
 
-        Main.gui.getPbLabel1().setText(String.valueOf(currentReq));
-        Main.gui.getReqSelectionButtons().clearSelection();
+        while (currentReq < annie.parList.size() && (outputList.get(currentReq).size() == 1 || outputList.get(currentReq).get(0).contains("H_ObjectContent : ") || outputList.get(currentReq).get(0).contains("ID : "))) {
+            currentReq++;
+            Main.gui.getjProgressBar1().setValue(currentReq);
+
+            Main.gui.getPbLabel1().setText(String.valueOf(currentReq));
+        }
 
         //Load next sentence and its annotations from outputList
         if (currentReq < annie.parList.size()) {
+
             Iterator<String> it = outputList.get(currentReq).iterator();
 
+            Main.gui.getReqSelectionButtons().clearSelection();
             //Show the source sentence in the upper TextField
             Main.gui.getInputReq().setText(it.next());
 
