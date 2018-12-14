@@ -1,15 +1,15 @@
 Phase: FunctionDescription
-Input: Token Split
+Input: Token Split Condition
 Options: control = appelt  debug = true
 
 Rule: FunctionDescription
 
 
 
-({Token.string == "shall"})
+({Token.string == "shall"} | {Token.string=="should"})
 (
 
-({Token, !Split})+
+({Token, !Split, !Condition})+
 
 )
 :ann

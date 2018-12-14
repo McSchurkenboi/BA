@@ -1,13 +1,14 @@
 Phase: CompleteSystemName
 Input: Token Split
-Options: control = appelt
+Options: control = appelt negationGrouping = false
 
 Rule: CompleteSystemName
 
 ({Token.category == DT})?
 (
 ({Token.category == NNP})+
-({Token, !Split})?
+({Token, !Split, !Token.category==MD})?
+({Token.category == DT})?
 ({Token.category == NNP})*
 ({Token.category == NN})?
 

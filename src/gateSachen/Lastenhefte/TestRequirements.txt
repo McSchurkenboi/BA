@@ -68,6 +68,8 @@ When viewing the results in a list or a map, a user should be able to filter the
 
 When filtering the results, only the existing results shall be affected and a new search query should not be sent.
 
+Only the existing results shall be affected and a new search query should not be sent, when filtering the results.
+
 The web application will generate visual reports of the current soil moisture levels. The reports will be generated as graphic representations of the data and will be filterable by zone, year, month, and day.
 
 The web application will have a status indicator on the home dashboard to display whether a zone is actively being watered or not.

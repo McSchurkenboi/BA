@@ -13,6 +13,17 @@ Rule: BP85_bsp
 ({FunctionDescription})
 ({Token, !Split})*
 
+|
+
+({Token, !Split})*
+({ConditionalActor})
+({Token, !Split})*
+({FunctionDescription})
+({Token, !Split})*
+({Condition})
+({Token, !Split})*
+
+
 )
 :ann
 

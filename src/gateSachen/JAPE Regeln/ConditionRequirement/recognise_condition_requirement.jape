@@ -1,5 +1,5 @@
 Phase: ConditionalRequirement
-Input: Token Split
+Input: Token Split ConditionalActor
 Options: control = appelt
 
 Rule: ConditionalRequirement
@@ -30,37 +30,10 @@ Rule: ConditionalRequirement
 	{Token.string == "as"}) 
 )
 
-({Token, !Token.string==","})*
+({Token, !Token.kind=="punctuation", !ConditionalActor})*
 
 ):condition
 
-(
-{Token.string==","}
-)
-
-(
-
-({Token, !Token.string=="shall"})*
-
-):conditionalactor
-
-
 
 -->
-:condition.Condition = {},
-:conditionalactor.ConditionalActor = {}
-/*
-
-
-Merke: Bei "[Aa]s" muss vorher ~ stehen.
-
-Merke: {Split} functioniert nicht. Dieser Annotation Type 
-enthält nur Punkte aber keine Kommata.
-
-Achtung: Bei dem folgenden Satz wird bisher nur der Teil nach
-dem Komma annotiert "Take the train, if the bus comes late."
-Für die Anwendung ist es wahrscheinlich erforderlich, dass
-der gesamte Satz markiert wird.
-
-
-*/
+:condition.Condition = {}

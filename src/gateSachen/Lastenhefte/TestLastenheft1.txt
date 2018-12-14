@@ -1,0 +1,15 @@
+The control of the trailer lamps shall be fully functional between 9V and 16V.
+
+If the TIM Battery Supply Voltage exceed 16 V, the outputs for the trailer lamps shall be switched off for hardware protection.
+
+The control of the trailer lamps shall keep the outputs power during an autostop restart down to Minimum AutoStart Cranking Voltage of 6 V.
+
+If "Reversing Lamp = TRUE" is received "Trailer Reverse Lamp Normal Command = ON" shall be set until " Reversing Lamp = FALSE” is received.
+
+“Trailer Brake Lamp Implausible Signal Reported = FALSE” shall be set again, if no implausible signal condition on the trailer brake lamp control inputs exist anymore.
+
+If a permanent internal error occurs that cannot be healed by a running resets, the Trailer Tail Lamp Control subfunction shall activate trailer tail lamps left and trailer tail lamps right as long as "Ignition Signal KL15 (Hardwired)" is active.
+
+Calibration to determine if the outage detection shall be enabled or disabled for the Trailer Reverse Lamp.
+
+If the lamp type cannot be detected, the lamp type shall be set to “LED” as default.
