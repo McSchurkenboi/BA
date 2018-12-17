@@ -1,20 +1,22 @@
 Phase: ConditionalRequirement
-Input: Token Split Condition
+Input: Token Split Condition 
 Options: control = appelt negationGrouping=false
 
 Rule: ConditionalRequirement
 
 
-
 ({Condition})?
 ({Token.string==","})?
+
 (
 
+(
 ( {Token, !Split, !Token.string=="shall", !Token.string=="should"} )*
-
 ):conditionalactor
 
 ({Token.string=="shall"} | {Token.string=="should"})
+
+)
 
 -->
 :conditionalactor.ConditionalActor = {}

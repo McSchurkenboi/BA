@@ -1,6 +1,6 @@
 Phase: ConditionalRequirement
 Input: Token Split ConditionalActor
-Options: control = appelt
+Options: control = appelt negationGrouping=false
 
 Rule: ConditionalRequirement
 
