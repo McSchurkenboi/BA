@@ -124,40 +124,16 @@ class BoilerplateHandler {
                 //all possible BPs, other way might be reflection/java maps with BP names and function pointers
                 switch (an.getType()) {
                     case "Boilerplate65c":
-                        outputList.get(i).add(formatBP65c(an));
+                        outputList.get(i).add(new Boilerplate65c().formatBP(an));
                         break;
                     case "Boilerplate85":
-                        outputList.get(i).add(formatBP85(an));
+                        outputList.get(i).add(new Boilerplate85().formatBP(an));
                 }
             }
             i++;
         }
 
         loadNextReq();
-    }
-
-    /**
-     * fills BP65c with required information
-     *
-     * @param an
-     * @return the filled boilerplate with the features required from an as a
-     * string
-     */
-    private String formatBP65c(Annotation an) {
-        FeatureMap map = an.getFeatures();
-        return "The actor <<" + map.get("completeSystemNameText") + ">> shall <<" + map.get("functionDescriptionText") + ">>.";
-    }
-
-    /**
-     * fills BP85 with required information
-     *
-     * @param an
-     * @return the filled boilerplate with the features required from an as a
-     * string
-     */
-    private String formatBP85(Annotation an) {
-        FeatureMap map = an.getFeatures();
-        return "Under the condition: <<" + map.get("conditionText") + ">> the actor: <<" + map.get("conditionalActorText") + ">> shall <<" + map.get("functionDescriptionText") + ">>.";
     }
 
     /**
