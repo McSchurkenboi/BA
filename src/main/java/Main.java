@@ -71,6 +71,7 @@ public class Main {
                 dialog.showOpenDialog(gui);
                 inputFile = dialog.getSelectedFile();
                 if (inputFile != null) {
+                    final long startTime = System.currentTimeMillis();
                     try {
                         gui.getInputReq().read(new FileReader(inputFile), e);
                     } catch (IOException e1) {
@@ -78,6 +79,7 @@ public class Main {
                     }
                     System.out.println("Loaded:" + inputFile.getName());
                     dialog.setSelectedFile(null);
+                    System.out.println(System.currentTimeMillis() - startTime);
                 }
                 gui.getConvertButton().setEnabled(true);
             });
