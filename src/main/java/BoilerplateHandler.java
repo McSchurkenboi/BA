@@ -1,7 +1,6 @@
 
 import gate.Annotation;
 import gate.AnnotationSet;
-import gate.FeatureMap;
 import gate.Utils;
 import java.io.BufferedWriter;
 import java.io.FileOutputStream;
@@ -60,7 +59,7 @@ class BoilerplateHandler {
     public void initializeParagraphs() {
         //ArrayList with size of sentence count
         int sentenceCount = annie.doc.getAnnotations().get("Sentence").size();
-        System.out.println(sentenceCount);
+        // System.out.println(sentenceCount);
         annie.parList = new ArrayList<>(sentenceCount);
 
         outputList = new ArrayList<>(sentenceCount);
@@ -114,6 +113,9 @@ class BoilerplateHandler {
         int i = 0;
 
         //for each paragraph, the sentence is processed matching to the found boilerplate annotations
+        boolean found=false;
+        int count=0;
+
         for (LinkedList<Annotation> paragraph : annie.parList) {
             Iterator<Annotation> it = paragraph.iterator();
             it.next();
@@ -124,40 +126,23 @@ class BoilerplateHandler {
                 //all possible BPs, other way might be reflection/java maps with BP names and function pointers
                 switch (an.getType()) {
                     case "Boilerplate65c":
-                        outputList.get(i).add(formatBP65c(an));
+                        outputList.get(i).add(new Boilerplate65c().formatBP(an));
+                        found=true;
                         break;
                     case "Boilerplate85":
-                        outputList.get(i).add(formatBP85(an));
+                        outputList.get(i).add(new Boilerplate85().formatBP(an));
+                        found=true;
                 }
+            }
+
+            if (found) {
+                count++;
+                found = false;
             }
             i++;
         }
-
+        System.out.println("Sentences with found conversions:" + count);
         loadNextReq();
-    }
-
-    /**
-     * fills BP65c with required information
-     *
-     * @param an
-     * @return the filled boilerplate with the features required from an as a
-     * string
-     */
-    private String formatBP65c(Annotation an) {
-        FeatureMap map = an.getFeatures();
-        return "The actor <<" + map.get("completeSystemNameText") + ">> shall <<" + map.get("functionDescriptionText") + ">>.";
-    }
-
-    /**
-     * fills BP85 with required information
-     *
-     * @param an
-     * @return the filled boilerplate with the features required from an as a
-     * string
-     */
-    private String formatBP85(Annotation an) {
-        FeatureMap map = an.getFeatures();
-        return "Under the condition: <<" + map.get("conditionText") + ">> the actor: <<" + map.get("conditionalActorText") + ">> shall <<" + map.get("functionDescriptionText") + ">>.";
     }
 
     /**
