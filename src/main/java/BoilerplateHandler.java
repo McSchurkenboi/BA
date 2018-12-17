@@ -113,8 +113,11 @@ class BoilerplateHandler {
         int i = 0;
 
         //for each paragraph, the sentence is processed matching to the found boilerplate annotations
-        boolean found=false;
-        int count=0;
+        boolean found = false;
+        int count = 0;
+        int count65 = 0;
+        int count85 = 0;
+        int countboth = 0;
 
         for (LinkedList<Annotation> paragraph : annie.parList) {
             Iterator<Annotation> it = paragraph.iterator();
@@ -127,11 +130,17 @@ class BoilerplateHandler {
                 switch (an.getType()) {
                     case "Boilerplate65c":
                         outputList.get(i).add(new Boilerplate65c().formatBP(an));
-                        found=true;
+                        count65++;
+                        found = true;
                         break;
                     case "Boilerplate85":
                         outputList.get(i).add(new Boilerplate85().formatBP(an));
-                        found=true;
+                        count85++;
+                        if (found) {
+                            countboth++;
+
+                        }
+                        found = true;
                 }
             }
 
@@ -141,7 +150,11 @@ class BoilerplateHandler {
             }
             i++;
         }
-        System.out.println("Sentences with found conversions:" + count);
+        System.out.println("Sentences with found conversions: " + count);
+        System.out.println("Both conversions: " + countboth);
+        System.out.println("65: " + count65);
+        System.out.println("85: " + count85);
+
         loadNextReq();
     }
 
