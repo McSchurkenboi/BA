@@ -22,7 +22,7 @@ public class Boilerplate65c extends Boilerplate {
     @Override
     public String formatBP(Annotation an) {
         map = an.getFeatures();
-        return "The actor <<" + map.get("completeSystemNameText") + ">> shall <<" + map.get("functionDescriptionText") + ">>.";
+        return "The complete system <<" + map.get("completeSystemNameText") + ">> shall <<" + map.get("functionDescriptionText") + ">>.";
     }
 
 }
