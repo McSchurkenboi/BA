@@ -79,7 +79,7 @@ public class Main {
                     }
                     System.out.println("Loaded:" + inputFile.getName());
                     dialog.setSelectedFile(null);
-                    System.out.println(System.currentTimeMillis() - startTime);
+                    System.out.println("Lade-Zeit: " + (System.currentTimeMillis() - startTime));
                 }
                 gui.getConvertButton().setEnabled(true);
             });
@@ -103,10 +103,12 @@ public class Main {
             });
             
             gui.getConvertButton().addActionListener((ActionEvent e) -> {
+                final long startTime = System.currentTimeMillis();
                 annie.execute();
                 gui.getConfirmButton().setEnabled(true);
                 gui.getSkipButton().setEnabled(true);
                 gui.getReviewButton().setEnabled(true);
+                System.out.println("Convert-Zeit: " + (System.currentTimeMillis() - startTime));
             });
             
             gui.setVisible(true);
