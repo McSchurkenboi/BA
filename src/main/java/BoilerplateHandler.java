@@ -1,7 +1,6 @@
 
 import gate.Annotation;
 import gate.AnnotationSet;
-import gate.FeatureMap;
 import gate.Utils;
 import java.io.BufferedWriter;
 import java.io.FileOutputStream;
@@ -60,7 +59,7 @@ class BoilerplateHandler {
     public void initializeParagraphs() {
         //ArrayList with size of sentence count
         int sentenceCount = annie.doc.getAnnotations().get("Sentence").size();
-        System.out.println(sentenceCount);
+        // System.out.println(sentenceCount);
         annie.parList = new ArrayList<>(sentenceCount);
 
         outputList = new ArrayList<>(sentenceCount);
@@ -114,6 +113,9 @@ class BoilerplateHandler {
         int i = 0;
 
         //for each paragraph, the sentence is processed matching to the found boilerplate annotations
+        boolean found=false;
+        int count=0;
+
         for (LinkedList<Annotation> paragraph : annie.parList) {
             Iterator<Annotation> it = paragraph.iterator();
             it.next();
@@ -125,14 +127,21 @@ class BoilerplateHandler {
                 switch (an.getType()) {
                     case "Boilerplate65c":
                         outputList.get(i).add(new Boilerplate65c().formatBP(an));
+                        found=true;
                         break;
                     case "Boilerplate85":
                         outputList.get(i).add(new Boilerplate85().formatBP(an));
+                        found=true;
                 }
+            }
+
+            if (found) {
+                count++;
+                found = false;
             }
             i++;
         }
-
+        System.out.println("Sentences with found conversions:" + count);
         loadNextReq();
     }
 
