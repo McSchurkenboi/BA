@@ -28,6 +28,14 @@ Rule: ConditionalRequirement
 	({Token.string ==~ "[Aa]s"}
 	{Token.string == "long"}
 	{Token.string == "as"}) 
+
+	|
+
+	({Token.string==~ "[Aa]fter"})
+
+	|
+
+	({Token.string==~ "[Bb]efore"})
 )
 
 ({Token, !Token.kind=="punctuation", !ConditionalActor})*
