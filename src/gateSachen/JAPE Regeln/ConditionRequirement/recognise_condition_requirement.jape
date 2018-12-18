@@ -38,7 +38,7 @@ Rule: ConditionalRequirement
 	({Token.string==~ "[Bb]efore"})
 )
 
-({Token, !Token.kind=="punctuation", !ConditionalActor})*
+({Token, !Token.string==",", !ConditionalActor})*
 
 ):condition
 
