@@ -1,3 +1,5 @@
+package Boilerplates;
+
 
 import gate.Annotation;
 import gate.FeatureMap;
