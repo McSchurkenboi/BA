@@ -7,6 +7,8 @@ Rule: ConditionalRequirement
 
 ({Condition})?
 ({Token.string==","})?
+({Token.category=="DT"})?
+
 
 (
 
