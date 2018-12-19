@@ -1,3 +1,5 @@
+package Content;
+
 
 import gate.Annotation;
 import gate.Corpus;

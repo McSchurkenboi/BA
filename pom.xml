@@ -18,7 +18,7 @@
           <manifest>
             <addClasspath>true</addClasspath>
             <classpathPrefix>lib/</classpathPrefix>
-            <mainClass>com.default.Main</mainClass>
+            <mainClass>SourcePackages.Content.Main</mainClass>
           </manifest>
         </archive>
       </configuration>
