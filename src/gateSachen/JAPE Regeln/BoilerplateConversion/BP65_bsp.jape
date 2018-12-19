@@ -1,12 +1,12 @@
 Phase: BoilerPlateConversion
-Input: Token Split FunctionDescription CompleteSystemName
+Input: Token Split FunctionDescription CompleteSystem
 Options: control = appelt  debug = true
 
 Rule: BP65_bsp
 (
 
 ({Token, !Split})*
-({CompleteSystemName})
+({CompleteSystem})
 ({Token, !Split})*
 ({FunctionDescription})
 ({Token, !Split})*
@@ -17,7 +17,7 @@ Rule: BP65_bsp
 --> 
 :ann.Boilerplate65c = {rule=BP65_bsp, 
 text=:ann@cleanString, 
-completeSystemNameText=:ann.CompleteSystemName@cleanString,
+completeSystemNameText=:ann.CompleteSystem@cleanString,
 functionDescriptionText=:ann.FunctionDescription@cleanString
 }
 
