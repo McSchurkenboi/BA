@@ -1,6 +1,5 @@
 package Content;
 
-
 import gate.Annotation;
 import gate.AnnotationSet;
 import gate.Utils;
@@ -120,9 +119,35 @@ class BoilerplateHandler {
         int count = 0;
         int count65 = 0;
         int count85 = 0;
-        int countboth = 0;
 
+        //Hierarchy of BPs: if 85 is found, 65c is always wrong and should not processed
         for (LinkedList<Annotation> paragraph : annie.parList) {
+
+            //find if BP85 in contained
+            boolean found85 = false, found65c = false;
+            //run for lowest hierarchy level
+            for (Annotation an : paragraph) {
+                if ("Boilerplate85".equals(an.getType())) {
+                    found85 = true;
+                    outputList.get(i).add(new Boilerplate85().formatBP(an));
+                    count85++;
+                    count++;
+                }
+            }
+
+            if (!found85) {
+                for (Annotation an : paragraph) {
+                    if ("Boilerplate65c".equals(an.getType())) {
+                        found65c = true;
+                        outputList.get(i).add(new Boilerplate65c().formatBP(an));
+                        count65++;
+                        count++;
+                    }
+                }
+            }
+
+            /*
+            //OLD: Without hierarchy, just convert any found Boilerplates
             Iterator<Annotation> it = paragraph.iterator();
             it.next();
 
@@ -146,15 +171,11 @@ class BoilerplateHandler {
                         found = true;
                 }
             }
-
-            if (found) {
-                count++;
-                found = false;
-            }
+             */
             i++;
         }
+
         System.out.println("Sentences with found conversions: " + count);
-        System.out.println("Both conversions: " + countboth);
         System.out.println("65: " + count65);
         System.out.println("85: " + count85);
 
