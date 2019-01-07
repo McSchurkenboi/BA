@@ -210,7 +210,7 @@ class BoilerplateHandler {
     public void loadNextReq() {
         currentReq++;
 
-        while (currentReq < annie.parList.size() && (/*outputList.get(currentReq).size() == 1 ||*/ outputList.get(currentReq).get(0).contains("H_ObjectContent : ") || outputList.get(currentReq).get(0).contains("ID : "))) {
+        while (currentReq < annie.parList.size() && (outputList.get(currentReq).size() == 1 || outputList.get(currentReq).get(0).contains("H_ObjectContent : ") || outputList.get(currentReq).get(0).contains("ID : "))) {
             currentReq++;
             Main.gui.getjProgressBar1().setValue(currentReq);
 
