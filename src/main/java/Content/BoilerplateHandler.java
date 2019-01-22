@@ -209,14 +209,17 @@ class BoilerplateHandler {
      */
     public void loadNextReq() {
         currentReq++;
+        Main.gui.getjProgressBar1().setValue(currentReq);
 
+        Main.gui.getPbLabel1().setText(String.valueOf(currentReq));
+        /*
         while (currentReq < annie.parList.size() && (outputList.get(currentReq).size() == 1 || outputList.get(currentReq).get(0).contains("H_ObjectContent : ") || outputList.get(currentReq).get(0).contains("ID : "))) {
             currentReq++;
             Main.gui.getjProgressBar1().setValue(currentReq);
 
             Main.gui.getPbLabel1().setText(String.valueOf(currentReq));
         }
-
+         */
         //Load next sentence and its annotations from outputList
         if (currentReq < annie.parList.size()) {
 
