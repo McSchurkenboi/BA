@@ -13,6 +13,9 @@ import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import Boilerplates.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.ObjectOutputStream;
 
 /**
  * summarizes BP conversion
@@ -40,6 +43,12 @@ class BoilerplateHandler {
 //    private Map<String, String> boilerplateMap;
 
     /**
+     * stores all Boilerplate-object with necessary informations and contained
+     * Strings
+     */
+    private LinkedList<Boilerplate> bpExportList;
+
+    /**
      * creates a new BoilerplateHandler, providing requirement processing to
      * ReqPad-powered BPs
      *
@@ -47,6 +56,7 @@ class BoilerplateHandler {
      */
     public BoilerplateHandler(AnnieHandler annie) {
         this.annie = annie;
+        bpExportList = new LinkedList<>();
 //        for (int i = 0; i < 100; i++) {
 //            boilerplateMap.put("Boilerplate" + i, null);
 //        }
@@ -129,7 +139,9 @@ class BoilerplateHandler {
             for (Annotation an : paragraph) {
                 if ("Boilerplate85".equals(an.getType())) {
                     found85 = true;
-                    outputList.get(i).add(new Boilerplate85().formatBP(an));
+                    Boilerplate85 bp85 = new Boilerplate85();
+                    outputList.get(i).add(bp85.formatBP(an));
+                    bpExportList.add(bp85);
                     count85++;
                     count++;
                 }
@@ -139,7 +151,9 @@ class BoilerplateHandler {
                 for (Annotation an : paragraph) {
                     if ("Boilerplate65c".equals(an.getType())) {
                         found65c = true;
-                        outputList.get(i).add(new Boilerplate65c().formatBP(an));
+                        Boilerplate65c bp65 = new Boilerplate65c();
+                        outputList.get(i).add(bp65.formatBP(an));
+                        bpExportList.add(bp65);
                         count65++;
                         count++;
                     }
@@ -294,9 +308,20 @@ class BoilerplateHandler {
             Logger.getLogger(AnnieHandler.class
                     .getName()).log(Level.SEVERE, null, ex);
         }
-
     }
 
+    public void exportBPs() {
+        try {
+            FileOutputStream fos = new FileOutputStream(Main.outputFile);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(bpExportList);
+            oos.close();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(BoilerplateHandler.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(BoilerplateHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }
 
 //OLD: findBPAnnotations
@@ -341,4 +366,4 @@ class BoilerplateHandler {
             annotationsToWrite.addAll(annSet.get("Boilerplate65c"));
             outputProcessedReq(doc.toXml(annotationsToWrite));
  */
-        //System.out.println(corpus.get(0).toXml());
+//System.out.println(corpus.get(0).toXml());

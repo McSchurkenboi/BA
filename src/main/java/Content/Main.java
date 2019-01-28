@@ -19,7 +19,7 @@ import javax.swing.JFileChooser;
 public class Main {
     
     static R2BMainWindow gui;
-    static File inputFile, outputFile;
+    public static File inputFile, outputFile;
     static AnnieHandler annie;
 
     /**
@@ -93,6 +93,16 @@ public class Main {
                     annie.bpHandler.exportToFileSystem();
                 }
                 dialog.setSelectedFile(null);
+            });
+            
+            gui.getBPExportButton().addActionListener((ActionEvent e) ->{
+                dialog.showSaveDialog(gui);
+                outputFile = dialog.getSelectedFile();
+                if (outputFile != null) {
+                    annie.bpHandler.exportBPs();
+                }
+                dialog.setSelectedFile(null);
+                System.out.println("BPs gespeichert.");
             });
             
             gui.getSkipButton().addActionListener((ActionEvent e) -> {

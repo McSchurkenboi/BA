@@ -21,10 +21,16 @@ public class Boilerplate85 extends Boilerplate {
      * @return the filled boilerplate with the features required from an as a
      * string
      */
+    String conditionText, conditionalActorText, functionDescriptionText;
+    
     @Override
     public String formatBP(Annotation an) {
         map = an.getFeatures();
-        return "Under the condition: <<" + map.get("conditionText") + ">> the actor: <<" + map.get("conditionalActorText") + ">> shall <<" + map.get("functionDescriptionText") + ">>.";
+        conditionText = (String) map.get("conditionText");
+        conditionalActorText = (String) map.get("conditionalActorText");
+        functionDescriptionText = (String) map.get("functionDescriptionText");
+        bp = "Under the condition: <<" + conditionText + ">> the actor: <<" + conditionalActorText + ">> shall <<" + functionDescriptionText + ">>.";
+        return bp;
     }
 
 }

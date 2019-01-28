@@ -60,6 +60,7 @@ public class R2BMainWindow extends javax.swing.JFrame {
         jScrollPane4 = new javax.swing.JScrollPane();
         OutputReq3 = new javax.swing.JTextArea();
         ReviewButton = new javax.swing.JButton();
+        BPExportButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Requirements2Boilerplate-Converter");
@@ -142,6 +143,13 @@ public class R2BMainWindow extends javax.swing.JFrame {
             }
         });
 
+        BPExportButton.setText("Export BPs");
+        BPExportButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BPExportButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -173,6 +181,8 @@ public class R2BMainWindow extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(convertButton)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(BPExportButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(exportButton))
                             .addComponent(jScrollPane1)
                             .addGroup(layout.createSequentialGroup()
@@ -203,7 +213,8 @@ public class R2BMainWindow extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(loadButton)
                     .addComponent(exportButton)
-                    .addComponent(convertButton))
+                    .addComponent(convertButton)
+                    .addComponent(BPExportButton))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
@@ -280,6 +291,10 @@ public class R2BMainWindow extends javax.swing.JFrame {
     private void ReviewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ReviewButtonActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_ReviewButtonActionPerformed
+
+    private void BPExportButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BPExportButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_BPExportButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -460,8 +475,17 @@ public class R2BMainWindow extends javax.swing.JFrame {
         this.reqSelectionButtons = reqSelectionButtons;
     }
 
+    public JButton getBPExportButton() {
+        return BPExportButton;
+    }
+
+    public void setBPExportButton(JButton BPExportButton) {
+        this.BPExportButton = BPExportButton;
+    }
+
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BPExportButton;
     private javax.swing.JButton ConfirmButton;
     private javax.swing.JTextArea InputReq;
     private javax.swing.JTextArea OutputReq1;
@@ -488,4 +512,6 @@ public class R2BMainWindow extends javax.swing.JFrame {
     private javax.swing.ButtonGroup reqSelectionButtons;
     private javax.swing.JButton skipButton;
     // End of variables declaration//GEN-END:variables
+
+   
 }

@@ -1,6 +1,5 @@
 package Boilerplates;
 
-
 import gate.Annotation;
 
 /*
@@ -21,10 +20,15 @@ public class Boilerplate65c extends Boilerplate {
      * @return the filled boilerplate with the features required from an as a
      * string
      */
+    String completeSystemText, functionDescriptionText;
+
     @Override
     public String formatBP(Annotation an) {
         map = an.getFeatures();
-        return "The complete system <<" + map.get("completeSystemNameText") + ">> shall <<" + map.get("functionDescriptionText") + ">>.";
+        completeSystemText = (String) map.get("completeSystemNameText");
+        functionDescriptionText = (String) map.get("functionDescriptionText");
+        bp = "The complete system <<" + completeSystemText + ">> shall <<" + functionDescriptionText + ">>.";
+        return bp;
     }
 
 }
