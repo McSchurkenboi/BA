@@ -54,6 +54,10 @@ public class Main {
                 }
             });
             
+            gui.getAnalyseButton().addActionListener((ActionEvent e) -> {
+                DA.analyseDeltas();
+            });
+            
             gui.setVisible(true);
             System.out.println("GUI geladen.");
 

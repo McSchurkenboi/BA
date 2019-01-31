@@ -1,6 +1,5 @@
 package Boilerplates;
 
-
 import gate.Annotation;
 
 /*
@@ -22,15 +21,33 @@ public class Boilerplate85 extends Boilerplate {
      * string
      */
     String conditionText, conditionalActorText, functionDescriptionText;
-    
+
+    public Boilerplate85() {
+        typ = "85";
+    }
+
     @Override
     public String formatBP(Annotation an) {
         map = an.getFeatures();
         conditionText = (String) map.get("conditionText");
         conditionalActorText = (String) map.get("conditionalActorText");
         functionDescriptionText = (String) map.get("functionDescriptionText");
-        bp = "Under the condition: <<" + conditionText + ">> the actor: <<" + conditionalActorText + ">> shall <<" + functionDescriptionText + ">>.";
-        return bp;
+        text = "Under the condition: <<" + conditionText + ">> the actor: <<" + conditionalActorText + ">> shall <<" + functionDescriptionText + ">>.";
+
+        return text;
     }
 
+    public String getConditionText() {
+        return conditionText;
+    }
+
+    public String getConditionalActorText() {
+        return conditionalActorText;
+    }
+
+    public String getFunctionDescriptionText() {
+        return functionDescriptionText;
+    }
+
+    
 }

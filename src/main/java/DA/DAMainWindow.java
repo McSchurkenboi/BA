@@ -36,6 +36,7 @@ public class DAMainWindow extends javax.swing.JFrame {
         jTextArea2 = new javax.swing.JTextArea();
         BPImportButton1 = new javax.swing.JButton();
         BPImportButton2 = new javax.swing.JButton();
+        AnalyseButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -47,14 +48,21 @@ public class DAMainWindow extends javax.swing.JFrame {
         jTextArea2.setRows(5);
         jScrollPane2.setViewportView(jTextArea2);
 
-        BPImportButton1.setText("Import Platform Specification");
+        BPImportButton1.setText("Import OEM-CRS");
         BPImportButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BPImportButton1ActionPerformed(evt);
             }
         });
 
-        BPImportButton2.setText("Import OEM-CRS");
+        BPImportButton2.setText("Import Internal CRS");
+
+        AnalyseButton.setText("Analyse Deltas");
+        AnalyseButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AnalyseButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -67,9 +75,14 @@ public class DAMainWindow extends javax.swing.JFrame {
                     .addComponent(jScrollPane1))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(BPImportButton2)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(92, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(BPImportButton2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+                        .addComponent(AnalyseButton))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -77,7 +90,8 @@ public class DAMainWindow extends javax.swing.JFrame {
                 .addContainerGap(112, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(BPImportButton2)
-                    .addComponent(BPImportButton1))
+                    .addComponent(BPImportButton1)
+                    .addComponent(AnalyseButton))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -91,6 +105,10 @@ public class DAMainWindow extends javax.swing.JFrame {
     private void BPImportButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BPImportButton1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_BPImportButton1ActionPerformed
+
+    private void AnalyseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AnalyseButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_AnalyseButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -127,6 +145,14 @@ public class DAMainWindow extends javax.swing.JFrame {
         });
     }
 
+    public JButton getAnalyseButton() {
+        return AnalyseButton;
+    }
+
+    public void setAnalyseButton(JButton AnalyseButton) {
+        this.AnalyseButton = AnalyseButton;
+    }
+
     public JButton getBPImportButton1() {
         return BPImportButton1;
     }
@@ -160,6 +186,7 @@ public class DAMainWindow extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton AnalyseButton;
     private javax.swing.JButton BPImportButton1;
     private javax.swing.JButton BPImportButton2;
     private javax.swing.JScrollPane jScrollPane1;

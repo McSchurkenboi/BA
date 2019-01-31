@@ -21,14 +21,28 @@ public class Boilerplate65c extends Boilerplate {
      * string
      */
     String completeSystemText, functionDescriptionText;
-
+    
+    public Boilerplate65c() {
+        typ = "65c";
+    }
+    
     @Override
     public String formatBP(Annotation an) {
         map = an.getFeatures();
         completeSystemText = (String) map.get("completeSystemNameText");
         functionDescriptionText = (String) map.get("functionDescriptionText");
-        bp = "The complete system <<" + completeSystemText + ">> shall <<" + functionDescriptionText + ">>.";
-        return bp;
+        text = "The complete system <<" + completeSystemText + ">> shall <<" + functionDescriptionText + ">>.";
+        
+        return text;
     }
 
+    public String getCompleteSystemText() {
+        return completeSystemText;
+    }
+
+    public String getFunctionDescriptionText() {
+        return functionDescriptionText;
+    }
+
+    
 }
