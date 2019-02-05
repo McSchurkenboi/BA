@@ -20,7 +20,16 @@ public abstract class Boilerplate implements Serializable {
     FeatureMap map;
     String text;
     String typ;
+    int reqID;
 
+    public int getReqID() {
+        return reqID;
+    }
+
+    public void setReqID(int reqID) {
+        this.reqID = reqID;
+    }
+    
     public abstract String formatBP(Annotation an);
 
     public String getText() {
@@ -30,6 +39,7 @@ public abstract class Boilerplate implements Serializable {
     public String getTyp(){
         return typ;
     }
+    
     
     public boolean equals(Boilerplate bp){
         return this.text.equals(bp.getText());
