@@ -27,14 +27,14 @@ public class Boilerplate85 extends Boilerplate {
     }
 
     @Override
-    public String formatBP(Annotation an) {
+    public Boilerplate formatBP(Annotation an) {
         map = an.getFeatures();
         conditionText = (String) map.get("conditionText");
         conditionalActorText = (String) map.get("conditionalActorText");
         functionDescriptionText = (String) map.get("functionDescriptionText");
         text = "Under the condition: <<" + conditionText + ">> the actor: <<" + conditionalActorText + ">> shall <<" + functionDescriptionText + ">>.";
 
-        return text;
+        return this;
     }
 
     public String getConditionText() {

@@ -38,7 +38,7 @@ class BoilerplateHandler {
      * stores the clean strings from each paragraph: input sentence, possible
      * conversions made by BPs
      */
-    private ArrayList<LinkedList<String>> outputList;
+    private ArrayList<LinkedList<Boilerplate>> outputList;
 //    private Map<String, String> boilerplateMap;
 
     /**
@@ -83,9 +83,17 @@ class BoilerplateHandler {
             liste.add(anno);
             annie.parList.add(liste);
 
-            //Initialize outputList with source sentence as first element
-            LinkedList<String> output = new LinkedList<>();
-            output.add(Utils.stringFor(annie.doc, anno));
+            //Initialize outputList with Boilerplate with source sentence in text attribute as first element
+            LinkedList<Boilerplate> output = new LinkedList<>();
+            output.add(new Boilerplate(){
+                @Override
+                public Boilerplate formatBP(Annotation an) {
+                    setMap(an.getFeatures());
+                    this.setText(Utils.stringFor(annie.doc, anno));
+                    return this;
+                }               
+            });
+            output.getFirst().formatBP(anno);
             outputList.add(output);
 
             //System.out.println("Satz eingefügt: " + Utils.cleanStringFor(annie.doc, anno));
@@ -140,7 +148,7 @@ class BoilerplateHandler {
                     found85 = true;
                     Boilerplate85 bp85 = new Boilerplate85();
                     outputList.get(i).add(bp85.formatBP(an));
-                    bpExportList.add(bp85);
+                    //bpExportList.add(bp85);
                     count85++;
                     count++;
                 }
@@ -152,7 +160,7 @@ class BoilerplateHandler {
                         found65c = true;
                         Boilerplate65c bp65 = new Boilerplate65c();
                         outputList.get(i).add(bp65.formatBP(an));
-                        bpExportList.add(bp65);
+                        //bpExportList.add(bp65);
                         count65++;
                         count++;
                     }
@@ -206,11 +214,11 @@ class BoilerplateHandler {
         //If changed, than append selected requirement from the text boxes to the output List
         if (!"".equals(Main.gui.getOutputReq1().getText())) {
             if (Main.gui.getReq1Button().isSelected()) {
-                outputList.get(currentReq).set(0, Main.gui.getOutputReq1().getText());
+                bpExportList.add(outputList.get(currentReq).get(1));
             } else if (Main.gui.getReq2Button().isSelected()) {
-                outputList.get(currentReq).set(0, Main.gui.getOutputReq2().getText());
+                bpExportList.add(outputList.get(currentReq).get(2));
             } else if (Main.gui.getReq3Button().isSelected()) {
-                outputList.get(currentReq).set(0, Main.gui.getOutputReq3().getText());
+                bpExportList.add(outputList.get(currentReq).get(3));
             }
         }
     }
@@ -236,11 +244,11 @@ class BoilerplateHandler {
         //Load next sentence and its annotations from outputList
         if (currentReq < annie.parList.size()) {
 
-            Iterator<String> it = outputList.get(currentReq).iterator();
+            Iterator<Boilerplate> it = outputList.get(currentReq).iterator();
 
             Main.gui.getReqSelectionButtons().clearSelection();
             //Show the source sentence in the upper TextField
-            Main.gui.getInputReq().setText(it.next());
+            Main.gui.getInputReq().setText(it.next().getText());
 
             Main.gui.getOutputReq1().setText("");
             Main.gui.getOutputReq2().setText("");
@@ -258,16 +266,16 @@ class BoilerplateHandler {
 
             } else {
                 //Iterate over the BP annotated for this sentence and print them as suggestions
-                Main.gui.getOutputReq1().setText(it.next());
+                Main.gui.getOutputReq1().setText(it.next().getText());
                 Main.gui.getReq1Button().setEnabled(true);
 
                 if (it.hasNext()) {
-                    Main.gui.getOutputReq2().setText(it.next());
+                    Main.gui.getOutputReq2().setText(it.next().getText());
                     Main.gui.getReq2Button().setEnabled(true);
 
                 }
                 if (it.hasNext()) {
-                    Main.gui.getOutputReq3().setText(it.next());
+                    Main.gui.getOutputReq3().setText(it.next().getText());
                     Main.gui.getReq3Button().setEnabled(true);
 
                 }
@@ -295,8 +303,8 @@ class BoilerplateHandler {
 
             FileOutputStream fos = new FileOutputStream(Main.outputFile);
             try (BufferedWriter bos = new BufferedWriter(new OutputStreamWriter(fos))) {
-                for (LinkedList<String> list : outputList) {
-                    bos.write(list.getFirst());
+                for (LinkedList<Boilerplate> list : outputList) {
+                    bos.write(list.getFirst().getText());
                     bos.newLine();
                     bos.newLine();
                 }
@@ -313,6 +321,9 @@ class BoilerplateHandler {
         try {
             FileOutputStream fos = new FileOutputStream(Main.outputFile);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
+            /*for(LinkedList<Boilerplate> ll: outputList){
+                bpExportList.add(ll.getFirst());
+            }*/
             oos.writeObject(bpExportList);
             oos.close();
         } catch (FileNotFoundException ex) {

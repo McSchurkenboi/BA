@@ -27,13 +27,13 @@ public class Boilerplate65c extends Boilerplate {
     }
     
     @Override
-    public String formatBP(Annotation an) {
+    public Boilerplate formatBP(Annotation an) {
         map = an.getFeatures();
         completeSystemText = (String) map.get("completeSystemNameText");
         functionDescriptionText = (String) map.get("functionDescriptionText");
         text = "The complete system <<" + completeSystemText + ">> shall <<" + functionDescriptionText + ">>.";
         
-        return text;
+        return this;
     }
 
     public String getCompleteSystemText() {

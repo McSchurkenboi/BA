@@ -6,6 +6,6 @@ The EBus2X is part of Golf7.
 
 The durability of EBus2X shall be at least 12000 h.
 
-If there is a cellular connection to the internet, the Bluetooth connected phone shall transmit the already packaged data to a centralized server.
+If there is a connection to the internet, the Bluetooth connected phone shall transmit the data to a server.
 
 When filtering the results, only the existing results shall be affected.
