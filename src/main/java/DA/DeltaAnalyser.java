@@ -54,6 +54,7 @@ public class DeltaAnalyser {
     }
 
     public void analyseDeltas() {
+        initializeIDs();
         int result;
         Boilerplate tempBP = new Boilerplate65c();
         for (Boilerplate bp1 : bpList1) {
@@ -86,16 +87,16 @@ public class DeltaAnalyser {
             }
             switch (result) {
                 case 0:
-                    System.out.println("OEM-Anf " + bp1.getText() + " und interne Anf " + tempBP.getText() + " sind identisch.");
+                    System.out.println("OEM-Anf " + bp1.getReqID() + " und interne Anf " + tempBP.getReqID() + " sind identisch:" + bp1.getText());
                     break;
                 case 1:
-                    System.out.println("OEM-Anf " + bp1.getText() + " und interne Anf " + tempBP.getText() + " beinhalten UNTERSCHIEDLICHE INFORMATIOEN zum SELBEN SYSTEM.");
+                    System.out.println("OEM-Anf " + bp1.getReqID()+ ": " + bp1.getText() + " und interne Anf " + tempBP.getReqID() + ": " + tempBP.getText() + " beinhalten UNTERSCHIEDLICHE INFORMATIOEN zum SELBEN SYSTEM.");
                     break;
                 case 2:
-                    System.out.println("OEM-Anf " + bp1.getText() + " und interne Anf " + tempBP.getText() + " beinhalten UNTERSCHIEDLICHE INFORMATIOEN zum GLEICHEN SYSTEMTYP. " + Vehicle.class.getName());
+                    System.out.println("OEM-Anf " + bp1.getReqID()+ ": " + bp1.getText() + " und interne Anf " + tempBP.getReqID() + ": " + tempBP.getText() + " beinhalten UNTERSCHIEDLICHE INFORMATIOEN zum GLEICHEN SYSTEMTYP. " + Vehicle.class.getName());
                     break;
                 case 6:
-                    System.out.println("No matches found for " + bp1.getText());
+                    System.out.println("No matches found for " + bp1.getReqID()+ ": " + bp1.getText());
             }
         }
     }
@@ -117,5 +118,18 @@ public class DeltaAnalyser {
             case "85": //Type Boilerplate85 ....TODO
         }
         return 4;
+    }
+    
+    public void initializeIDs(){
+        //goes through both BP-lists and gives each BP an unique ID (in the same BP-List)
+        //could later be replaced by reading the IDs for the req specification in the R2BC
+        int oemID=1;
+        int hellaID=1;
+        for (Boilerplate bp1 : bpList1) {
+            bp1.setReqID(oemID++);
+        }
+        for (Boilerplate bp2 : bpList2) {
+            bp2.setReqID(hellaID++);
+        }
     }
 }
