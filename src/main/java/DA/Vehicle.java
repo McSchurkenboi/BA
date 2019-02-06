@@ -23,5 +23,4 @@ public enum Vehicle {
         }
         return false;
     }
-
 }
