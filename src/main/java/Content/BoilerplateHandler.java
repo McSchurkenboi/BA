@@ -303,8 +303,8 @@ class BoilerplateHandler {
 
             FileOutputStream fos = new FileOutputStream(Main.outputFile);
             try (BufferedWriter bos = new BufferedWriter(new OutputStreamWriter(fos))) {
-                for (LinkedList<Boilerplate> list : outputList) {
-                    bos.write(list.getFirst().getText());
+                for (Boilerplate bp: bpExportList) {
+                    bos.write(bp.getText());
                     bos.newLine();
                     bos.newLine();
                 }
