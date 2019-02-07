@@ -1,4 +1,4 @@
-package Content;
+package R2BC;
 
 import gate.Annotation;
 import gate.AnnotationSet;
