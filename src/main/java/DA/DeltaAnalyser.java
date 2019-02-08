@@ -8,7 +8,6 @@ package DA;
 import Boilerplates.Boilerplate;
 import Boilerplates.Boilerplate65c;
 import Boilerplates.Boilerplate85;
-import Content.AnnieHandler;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
@@ -93,7 +92,7 @@ public class DeltaAnalyser {
 
             FileOutputStream fos = new FileOutputStream(new File("C:\\Users\\rittfe1\\Desktop\\delta-report.txt"));
             BufferedWriter bos = new BufferedWriter(new OutputStreamWriter(fos));
-             
+
             System.out.println("Saved to file");
 
             for (Boilerplate bp1 : bpList1) {
@@ -133,8 +132,6 @@ public class DeltaAnalyser {
             bos.write("Keine Zuweisung möglich" + differentCount + " von " + bpList1.size());
             bos.flush();
         } catch (IOException ex) {
-            Logger.getLogger(AnnieHandler.class
-                    .getName()).log(Level.SEVERE, null, ex);
         }
     }
 

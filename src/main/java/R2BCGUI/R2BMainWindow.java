@@ -1,4 +1,4 @@
-package R2BC;
+package R2BCGUI;
 
 
 import javax.swing.ButtonGroup;
