@@ -46,11 +46,7 @@ public class AnnieHandler {
      */
     public CorpusController controller;
 
-    /**
-     * stores annotation extracted from the annie system (controller), i.e.
-     * sentences and boilerplates
-     */
-    public ArrayList<LinkedList<Annotation>> parList;
+    
     BoilerplateHandler bpHandler;
 
     /**
@@ -84,7 +80,8 @@ public class AnnieHandler {
             Gate.init();
 
             //restore from File
-            controller = (CorpusController) PersistenceManager.loadObjectFromFile(new File("src\\gateSachen\\ANNIE Saves\\GazetteerTest.gapp"));
+            controller = (CorpusController) 
+                    PersistenceManager.loadObjectFromFile(new File("ANNIE.gapp"));
 
         } catch (GateException ex) {
             System.out.println("Gate-Fehler");
@@ -101,7 +98,7 @@ public class AnnieHandler {
      * Then buils up internal program structure out of annotations, finds and
      * converts boilerplates, and stores each of them in internal lists
      */
-    public void execute() {
+    public void convert() {
         try {
             //create Corpus for document from file system
             corpus = Factory.newCorpus("MyCorpus");
@@ -117,10 +114,10 @@ public class AnnieHandler {
             //Load paragraphs and initialize Lists
             bpHandler.initializeParagraphs();
 
-            //Traverse BP-Annotations and add to parList
+            //Traverse BP-Annotations and add to sentenceList
             bpHandler.findPossibleConversions();
 
-            //convert annotated sentences to matching BPs, store strings
+            //convert annotated sentences to matching BPs, store Boilerplates
             bpHandler.convertBPs();
 
         } catch (ExecutionException | MalformedURLException | ResourceInstantiationException ex) {

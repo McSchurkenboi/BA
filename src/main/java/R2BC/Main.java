@@ -117,7 +117,7 @@ public class Main {
             
             gui.getConvertButton().addActionListener((ActionEvent e) -> {
                 final long startTime = System.currentTimeMillis();
-                annie.execute();
+                annie.convert();
                 gui.getConfirmButton().setEnabled(true);
                 gui.getSkipButton().setEnabled(true);
                 gui.getReviewButton().setEnabled(true);
