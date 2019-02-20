@@ -8,7 +8,6 @@ package DA;
 import Boilerplates.Boilerplate;
 import Boilerplates.Boilerplate65c;
 import Boilerplates.Boilerplate85;
-import Content.AnnieHandler;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
@@ -44,6 +43,12 @@ public class DeltaAnalyser {
      * Boilerplate List for loaded file
      */
     LinkedList<Boilerplate> tempBPList;
+
+    /**
+     * List for found matches
+     */
+    LinkedList<BoilerplateMatch> matchBPList;
+
     int equalCount = 0, comparableCount = 0, differentCount = 0;
 
     /**
@@ -88,13 +93,12 @@ public class DeltaAnalyser {
     public void analyseDeltas() {
         initializeIDs();
         int result;
-        Boilerplate tempBP = new Boilerplate65c();
-        try {
+        matchBPList = new LinkedList<>();
 
+        try {
+            Boilerplate tempBP = new Boilerplate65c();
             FileOutputStream fos = new FileOutputStream(new File("C:\\Users\\rittfe1\\Desktop\\delta-report.txt"));
             BufferedWriter bos = new BufferedWriter(new OutputStreamWriter(fos));
-             
-            System.out.println("Saved to file");
 
             for (Boilerplate bp1 : bpList1) {
                 result = 6;
@@ -124,17 +128,18 @@ public class DeltaAnalyser {
                         break;
                     }
                 }
-
-                System.out.println(printResult(bp1, tempBP, result));
-                bos.write(printResult(bp1, tempBP, result));
+                matchBPList.add(new BoilerplateMatch(bp1, tempBP, result));
+                bos.write(exportResult(bp1, tempBP, result));
                 bos.newLine();
+                bos.write("----------------------------------------------------------------------------------------");
+                bos.newLine();
+
             }
-            bos.write("Übereinstimmend: " + equalCount + " von " + bpList1.size());
-            bos.write("Keine Zuweisung möglich" + differentCount + " von " + bpList1.size());
+            bos.write("Insgesamt " + bpList1.size() + " OEM-Anforderungen. Davon sind identisch: " + equalCount + ". Keine Übereinstimmung bei: " + differentCount + ".");
             bos.flush();
-        } catch (IOException ex) {
-            Logger.getLogger(AnnieHandler.class
-                    .getName()).log(Level.SEVERE, null, ex);
+            bos.close();
+        } catch (IOException e) {
+            System.out.println("IO-Fehler.");
         }
     }
 
@@ -206,49 +211,56 @@ public class DeltaAnalyser {
      * processes output for the results of comparison for two boilerplates based
      * on their agreement level
      *
-     * @param bp1 new requirement in boilerplate
-     * @param tempBP old requirement in boilerplate
-     * @param result result of comparsion that defines agreement level
-     * @return valuation as String
      */
-    private String printResult(Boilerplate bp1, Boilerplate tempBP, int result) {
-        switch (tempBP.getTyp()) {
-            case "65c":
-                switch (result) {
-                    case 0:
-                        equalCount++;
-                        return "OEM-Anf " + bp1.getReqID() + " und interne Anf " + tempBP.getReqID() + " sind identisch:" + bp1.getText();
-                    case 1:
-                        return "OEM-Anf " + bp1.getReqID() + ": " + bp1.getText() + " und interne Anf " + tempBP.getReqID() + ": " + tempBP.getText() + " beinhalten UNTERSCHIEDLICHE INFORMATIONEN zum SELBEN SYSTEM.";
-                    case 2:
-                        return "OEM-Anf " + bp1.getReqID() + ": " + bp1.getText() + " und interne Anf " + tempBP.getReqID() + ": " + tempBP.getText() + " beinhalten UNTERSCHIEDLICHE INFORMATIONEN zum GLEICHEN SYSTEMTYP. " + Vehicle.class.getName();
-                    case 3:
-                        return "OEM-Anf " + bp1.getReqID() + ": " + bp1.getText() + " und interne Anf " + tempBP.getReqID() + ": " + tempBP.getText() + " sind ohne inhaltliche Übereinstimmung, aber in der gleichen Boilerplate.";
-                    case 6:
-                        differentCount++;
-                        return "No matches found for " + bp1.getReqID() + ": " + bp1.getText();
-                }
-                return "No results found";
-            case "85":
-                switch (result) {
-                    case 0:
-                        equalCount++;
-                        return "OEM-Anf " + bp1.getReqID() + " und interne Anf " + tempBP.getReqID() + " sind identisch:" + bp1.getText();
-                    case 1:
-                        return "OEM-Anf " + bp1.getReqID() + ": " + bp1.getText() + " und interne Anf " + tempBP.getReqID() + ": " + tempBP.getText() + " beinhhalten UNTERSCHIEDLICHE INFORMATIONEN zum SELBEN SYSTEM zur SELBEN BEDINGUNG";
-                    case 2:
-                        return "OEM-Anf " + bp1.getReqID() + ": " + bp1.getText() + " und interne Anf " + tempBP.getReqID() + ": " + tempBP.getText() + " beinhhalten UNTERSCHIEDLICHE BEDINGUNGEN zum SELBEN SYSTEM zur SELBEN INFORMATION";
-                    case 3:
-                        return "OEM-Anf " + bp1.getReqID() + ": " + bp1.getText() + " und interne Anf " + tempBP.getReqID() + ": " + tempBP.getText() + " beinhhalten UNTERSCHIEDLICHE INFORMATIONEN zum GLEICHEN SYSTEMTYP zur SELBEN BEDINGUNG";
-                    case 4:
-                        return "OEM-Anf " + bp1.getReqID() + ": " + bp1.getText() + " und interne Anf " + tempBP.getReqID() + ": " + tempBP.getText() + " beinhhalten UNTERSCHIEDLICHE BEDINGUNGEN zum GLEICHEN SYSTEMTYP zur SELBEN INFORMATION";
-                    case 5:
-                        return "OEM-Anf " + bp1.getReqID() + ": " + bp1.getText() + " und interne Anf " + tempBP.getReqID() + ": " + tempBP.getText() + " sind ohne inhaltliche Übereinstimmung, aber in der gleichen Boilerplate.";
-                    case 6:
-                        differentCount++;
-                        return "No matches found for " + bp1.getReqID() + ": " + bp1.getText();
-                }
+    public String exportResult(Boilerplate b1, Boilerplate tempB, int result) {
+
+        if ("65c".equals(tempB.getTyp())) {
+            Boilerplate65c bp1 = (Boilerplate65c) b1;
+            Boilerplate65c tempBP = (Boilerplate65c) tempB;
+            switch (result) {
+                case 0:
+                    equalCount++;
+                    return String.format("OEM-Anf " + bp1.getReqID() + " und HELLA-Anf " + tempBP.getReqID() + " sind identisch: \n" + bp1.getText());
+                case 1:
+                    return String.format("OEM-Anf " + bp1.getReqID() + " und HELLA-Anf " + tempBP.getReqID() + " beinhalten UNTERSCHIEDLICHE INFORMATIONEN zum SELBEN SYSTEM: \n" + bp1.getFunctionDescriptionText());
+                case 2:
+                    return String.format("OEM-Anf " + bp1.getReqID() + " und HELLA-Anf " + tempBP.getReqID() + " beinhalten UNTERSCHIEDLICHE INFORMATIONEN zum GLEICHEN SYSTEMTYP: \n" + bp1.getFunctionDescriptionText() + ", " + Vehicle.class.getName());
+                case 3:
+                    return String.format("OEM-Anf " + bp1.getReqID() + " und HELLA-Anf " + tempBP.getReqID() + " sind ohne inhaltliche Übereinstimmung, aber in der gleichen Boilerplate. \n" + bp1.getText());
+                case 6:
+                    differentCount++;
+                    return "No matches found for " + bp1.getReqID() + bp1.getText();
+            }
+            return "No results found";
+        } else if ("85".equals(tempB.getTyp())) {
+            Boilerplate85 bp1 = (Boilerplate85) b1;
+            Boilerplate85 tempBP = (Boilerplate85) tempB;
+            switch (result) {
+                case 0:
+                    equalCount++;
+                    return String.format("OEM-Anf " + bp1.getReqID() + " und HELLA-Anf " + tempBP.getReqID() + " sind identisch: \n" + bp1.getText());
+                case 1:
+                    return String.format("OEM-Anf " + bp1.getReqID() + " und HELLA-Anf " + tempBP.getReqID() + ": " + " beinhhalten UNTERSCHIEDLICHE INFORMATIONEN zum SELBEN SYSTEM zur SELBEN BEDINGUNG: \n" + bp1.getFunctionDescriptionText());
+                case 2:
+                    return String.format("OEM-Anf " + bp1.getReqID() + " und HELLA-Anf " + tempBP.getReqID() + ": " + " beinhhalten UNTERSCHIEDLICHE BEDINGUNGEN zum SELBEN SYSTEM zur SELBEN INFORMATION: \n" + bp1.getConditionText());
+                case 3:
+                    return String.format("OEM-Anf " + bp1.getReqID() + " und HELLA-Anf " + tempBP.getReqID() + ": " + " beinhhalten UNTERSCHIEDLICHE INFORMATIONEN zum GLEICHEN SYSTEMTYP zur SELBEN BEDINGUNG: \n" + bp1.getFunctionDescriptionText() + ", " + Vehicle.class.getName());
+                case 4:
+                    return String.format("OEM-Anf " + bp1.getReqID() + " und HELLA-Anf " + tempBP.getReqID() + ": " + " beinhhalten UNTERSCHIEDLICHE BEDINGUNGEN zum GLEICHEN SYSTEMTYP zur SELBEN INFORMATION: \n" + bp1.getConditionText() + ", " + Vehicle.class.getName());
+                case 5:
+                    return String.format("OEM-Anf " + bp1.getReqID() + " und HELLA-Anf " + tempBP.getReqID() + ": " + " sind ohne inhaltliche Übereinstimmung, aber in der gleichen Boilerplate. \n" + bp1.getText());
+                case 6:
+                    differentCount++;
+                    return "No matches found for " + bp1.getReqID() + ": " + bp1.getText();
+            }
         }
-        return "fehler";
+        return "Fehler.";
     }
+
 }
+/*try {
+
+             
+            bos.write("Übereinstimmend: " + equalCount + " von " + bpList1.size());
+            bos.write("Keine Zuweisung möglich" + differentCount + " von " + bpList1.size());
+ */

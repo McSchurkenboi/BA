@@ -22,7 +22,7 @@ public class Main {
     public static void main(String[] args) {
 
         DA = new DeltaAnalyser();
-        
+
         initGUI();
     }
 
@@ -32,32 +32,46 @@ public class Main {
         java.awt.EventQueue.invokeLater(() -> {
             gui = new DAMainWindow();
 
+            gui.getjLabel1().setVisible(false);
+            gui.getjLabel2().setVisible(false);
+            gui.getExportButton().setEnabled(false);
+
             gui.getBPImportButton1().addActionListener((ActionEvent e) -> {
                 dialog.showOpenDialog(gui);
                 bp = dialog.getSelectedFile();
                 if (bp != null) {
                     DA.loadBPsFromFile();
-                    gui.getjTextArea1().setText(bp.getName());
-                    DA.bpList1=DA.tempBPList;
+                    gui.getjTextField1().setText(bp.getName());
+                    gui.getjTextField1().setEditable(false);
+                    gui.getjLabel1().setVisible(true);
+                    DA.bpList1 = DA.tempBPList;
                     dialog.setSelectedFile(null);
                 }
             });
-            
+
             gui.getBPImportButton2().addActionListener((ActionEvent e) -> {
                 dialog.showOpenDialog(gui);
                 bp = dialog.getSelectedFile();
                 if (bp != null) {
                     DA.loadBPsFromFile();
-                    gui.getjTextArea2().setText(bp.getName());
-                    DA.bpList2=DA.tempBPList;
+                    gui.getjTextField2().setText(bp.getName());
+                    gui.getjTextField2().setEditable(false);
+                    gui.getjLabel2().setVisible(true);
+                    DA.bpList2 = DA.tempBPList;
                     dialog.setSelectedFile(null);
                 }
             });
-            
+
             gui.getAnalyseButton().addActionListener((ActionEvent e) -> {
                 DA.analyseDeltas();
+                gui.getExportButton().setEnabled(true);
+                gui.getjLabel3().setText("Analysis finished");
             });
-            
+
+            gui.getExportButton().addActionListener((ActionEvent e) -> {
+                
+            });
+
             gui.setVisible(true);
             System.out.println("GUI geladen.");
 
