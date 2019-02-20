@@ -1,6 +1,7 @@
-package Content;
+package R2BC;
 
 
+import R2BCGUI.R2BMainWindow;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileReader;
@@ -116,7 +117,7 @@ public class Main {
             
             gui.getConvertButton().addActionListener((ActionEvent e) -> {
                 final long startTime = System.currentTimeMillis();
-                annie.execute();
+                annie.convert();
                 gui.getConfirmButton().setEnabled(true);
                 gui.getSkipButton().setEnabled(true);
                 gui.getReviewButton().setEnabled(true);

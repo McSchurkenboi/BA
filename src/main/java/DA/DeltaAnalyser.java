@@ -140,9 +140,9 @@ public class DeltaAnalyser {
             bos.close();
         } catch (IOException e) {
             System.out.println("IO-Fehler.");
-        }
-    }
 
+    }
+    }
     /**
      * finds the agreement level of annotations from two boilerplates of the
      * same type

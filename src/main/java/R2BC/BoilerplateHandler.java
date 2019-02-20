@@ -1,4 +1,4 @@
-package Content;
+package R2BC;
 
 import gate.Annotation;
 import gate.AnnotationSet;
@@ -33,12 +33,18 @@ class BoilerplateHandler {
      * the annie system the informations are received from
      */
     private final AnnieHandler annie;
+    
+    /**
+     * stores annotation extracted from the annie system (controller), i.e.
+     * sentences and boilerplates
+     */
+    public ArrayList<LinkedList<Annotation>> sentenceList;
 
     /**
      * stores the clean strings from each paragraph: input sentence, possible
      * conversions made by BPs
      */
-    private ArrayList<LinkedList<Boilerplate>> outputList;
+    private ArrayList<LinkedList<Boilerplate>> bpList;
 //    private Map<String, String> boilerplateMap;
 
     /**
@@ -62,8 +68,8 @@ class BoilerplateHandler {
     }
 
     /**
-     * initializes the paragraph list from Annie Handler (parList) with the
-     * sentence annotation for each paragraph. i.e. the paragraphs are splitted
+     * initializes the paragraph list from Annie Handler (sentenceList) with the
+ sentence annotation for each paragraph. i.e. the paragraphs are splitted
      * sentencewise and can now each be traversed by the sentence annotation.
      * Must be called before BPs can be discovered over the sentences
      */
@@ -71,19 +77,19 @@ class BoilerplateHandler {
         //ArrayList with size of sentence count
         int sentenceCount = annie.doc.getAnnotations().get("Sentence").size();
         // System.out.println(sentenceCount);
-        annie.parList = new ArrayList<>(sentenceCount);
+        sentenceList = new ArrayList<>(sentenceCount);
 
-        outputList = new ArrayList<>(sentenceCount);
+        bpList = new ArrayList<>(sentenceCount);
 
         AnnotationSet annotations = annie.doc.getAnnotations().get("Sentence");
 
         annotations.forEach((anno) -> {
-            //Initialize parList
+            //Initialize sentenceList
             LinkedList<Annotation> liste = new LinkedList<>();
             liste.add(anno);
-            annie.parList.add(liste);
+            sentenceList.add(liste);
 
-            //Initialize outputList with Boilerplate with source sentence in text attribute as first element
+            //Initialize bpList with Boilerplate with source sentence in text attribute as first element
             LinkedList<Boilerplate> output = new LinkedList<>();
             output.add(new Boilerplate(){
                 @Override
@@ -94,9 +100,8 @@ class BoilerplateHandler {
                 }               
             });
             output.getFirst().formatBP(anno);
-            outputList.add(output);
+            bpList.add(output);
 
-            //System.out.println("Satz eingefügt: " + Utils.cleanStringFor(annie.doc, anno));
         });
 
         Main.gui.getConvertButton().setEnabled(false);
@@ -105,16 +110,16 @@ class BoilerplateHandler {
     }
 
     /**
-     * Fill parList with possible BP conversions, discovers BP annotaion within
-     * span of each sentence
+     * Fill sentenceList with possible BP conversions, discovers BP annotaion within
+ span of each sentence
      */
     public void findPossibleConversions() {
-        //Traverse each paragraph in parList
+        //Traverse each paragraph in sentenceList
 
         //TODO reqgular expression BoilerplateXXX
         AnnotationSet bpSet = annie.doc.getAnnotations("Boilerplates").get();
 
-        annie.parList.forEach((paragraph) -> {
+        sentenceList.forEach((paragraph) -> {
 
             //find matching BPs within span of paragraph
             bpSet.stream().filter((bpAnno) -> (bpAnno.withinSpanOf(paragraph.get(0)))).forEachOrdered((e) -> paragraph.add(e));
@@ -124,8 +129,8 @@ class BoilerplateHandler {
 
     /**
      * converts for each BP possibility sentencewise, later maybe uses knowledge
-     * about all possible BPs and finds best, so just one conversion is made and
-     * stored to outputList
+ about all possible BPs and finds best, so just one conversion is made and
+ stored to bpList
      */
     public void convertBPs() {
 
@@ -138,7 +143,7 @@ class BoilerplateHandler {
         int count85 = 0;
 
         //Hierarchy of BPs: if 85 is found, 65c is always wrong and should not processed
-        for (LinkedList<Annotation> paragraph : annie.parList) {
+        for (LinkedList<Annotation> paragraph : sentenceList) {
 
             //find if BP85 in contained
             boolean found85 = false, found65c = false;
@@ -147,7 +152,7 @@ class BoilerplateHandler {
                 if ("Boilerplate85".equals(an.getType())) {
                     found85 = true;
                     Boilerplate85 bp85 = new Boilerplate85();
-                    outputList.get(i).add(bp85.formatBP(an));
+                    bpList.get(i).add(bp85.formatBP(an));
                     //bpExportList.add(bp85);
                     count85++;
                     count++;
@@ -159,7 +164,7 @@ class BoilerplateHandler {
                     if ("Boilerplate65c".equals(an.getType())) {
                         found65c = true;
                         Boilerplate65c bp65 = new Boilerplate65c();
-                        outputList.get(i).add(bp65.formatBP(an));
+                        bpList.get(i).add(bp65.formatBP(an));
                         //bpExportList.add(bp65);
                         count65++;
                         count++;
@@ -178,12 +183,12 @@ class BoilerplateHandler {
                 //all possible BPs, other way might be reflection/java maps with BP names and function pointers
                 switch (an.getType()) {
                     case "Boilerplate65c":
-                        outputList.get(i).add(new Boilerplate65c().formatBP(an));
+                        bpList.get(i).add(new Boilerplate65c().formatBP(an));
                         count65++;
                         found = true;
                         break;
                     case "Boilerplate85":
-                        outputList.get(i).add(new Boilerplate85().formatBP(an));
+                        bpList.get(i).add(new Boilerplate85().formatBP(an));
                         count85++;
                         if (found) {
                             countboth++;
@@ -204,29 +209,29 @@ class BoilerplateHandler {
     }
 
     /**
-     * saves changes from the GUI to the outputList
-     *
-     * the first element for the sentence in the outputList is overwritten with
-     * the change
+     * saves changes from the GUI to the bpList
+
+ the first element for the sentence in the bpList is overwritten with
+ the change
      */
     public void storeProcessedReq() {
 
-        //If changed, than append selected requirement from the text boxes to the output List
+        //If changed, than append selected requirement from the text boxes to the bpExportList
         if (!"".equals(Main.gui.getOutputReq1().getText())) {
             if (Main.gui.getReq1Button().isSelected()) {
-                bpExportList.add(outputList.get(currentReq).get(1));
+                bpExportList.add(bpList.get(currentReq).get(1));
             } else if (Main.gui.getReq2Button().isSelected()) {
-                bpExportList.add(outputList.get(currentReq).get(2));
+                bpExportList.add(bpList.get(currentReq).get(2));
             } else if (Main.gui.getReq3Button().isSelected()) {
-                bpExportList.add(outputList.get(currentReq).get(3));
+                bpExportList.add(bpList.get(currentReq).get(3));
             }
         }
     }
 
     /**
-     * load next paragraph to the GUI from the outputList,
-     *
-     * (clean string in upper text field, BP conversions fill the lower fields)
+     * load next paragraph to the GUI from the bpList,
+
+ (clean string in upper text field, BP conversions fill the lower fields)
      */
     public void loadNextReq() {
         currentReq++;
@@ -234,17 +239,17 @@ class BoilerplateHandler {
 
         Main.gui.getPbLabel1().setText(String.valueOf(currentReq));
         /*
-        while (currentReq < annie.parList.size() && (outputList.get(currentReq).size() == 1 || outputList.get(currentReq).get(0).contains("H_ObjectContent : ") || outputList.get(currentReq).get(0).contains("ID : "))) {
+        while (currentReq < annie.sentenceList.size() && (bpList.get(currentReq).size() == 1 || bpList.get(currentReq).get(0).contains("H_ObjectContent : ") || bpList.get(currentReq).get(0).contains("ID : "))) {
             currentReq++;
             Main.gui.getjProgressBar1().setValue(currentReq);
 
             Main.gui.getPbLabel1().setText(String.valueOf(currentReq));
         }
          */
-        //Load next sentence and its annotations from outputList
-        if (currentReq < annie.parList.size()) {
+        //Load next sentence and its annotations from bpList
+        if (currentReq < sentenceList.size()) {
 
-            Iterator<Boilerplate> it = outputList.get(currentReq).iterator();
+            Iterator<Boilerplate> it = bpList.get(currentReq).iterator();
 
             Main.gui.getReqSelectionButtons().clearSelection();
             //Show the source sentence in the upper TextField
@@ -303,8 +308,8 @@ class BoilerplateHandler {
 
             FileOutputStream fos = new FileOutputStream(Main.outputFile);
             try (BufferedWriter bos = new BufferedWriter(new OutputStreamWriter(fos))) {
-                for (LinkedList<Boilerplate> list : outputList) {
-                    bos.write(list.getFirst().getText());
+                for (Boilerplate bp: bpExportList) {
+                    bos.write(bp.getText());
                     bos.newLine();
                     bos.newLine();
                 }
@@ -321,7 +326,7 @@ class BoilerplateHandler {
         try {
             FileOutputStream fos = new FileOutputStream(Main.outputFile);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
-            /*for(LinkedList<Boilerplate> ll: outputList){
+            /*for(LinkedList<Boilerplate> ll: bpList){
                 bpExportList.add(ll.getFirst());
             }*/
             oos.writeObject(bpExportList);
@@ -338,9 +343,9 @@ class BoilerplateHandler {
 
 /*
         //Load List of BPs for a sentence
-        LinkedList<Annotation> bpList = (LinkedList<Annotation>) annie.parList.get(0);
+        LinkedList<Annotation> bpList = (LinkedList<Annotation>) annie.sentenceList.get(0);
         //bpList.add("Boilerplate65c");
-        System.out.println("Anzahl Sätze:" + annie.parList.size());
+        System.out.println("Anzahl Sätze:" + annie.sentenceList.size());
 
         //create List of BPs to iterate
         List annotTypes = new ArrayList();
