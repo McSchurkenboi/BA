@@ -19,6 +19,7 @@ public class Main {
     static DAMainWindow gui;
     static DeltaAnalyser DA;
     static File bp;
+    static File outputFile;
 
     public static void main(String[] args) {
 
@@ -64,18 +65,22 @@ public class Main {
             });
 
             gui.getAnalyseButton().addActionListener((ActionEvent e) -> {
+                dialog.showSaveDialog(gui);
+                outputFile = dialog.getSelectedFile();
+                if (outputFile != null) {
+
+                }
                 DA.analyseDeltas();
                 gui.getExportButton().setEnabled(true);
                 gui.getjLabel3().setText("Analysis finished");
+                dialog.setSelectedFile(null);
             });
-
-            gui.getExportButton().addActionListener((ActionEvent e) -> {
-                
-            });
-
             gui.setVisible(true);
-            System.out.println("GUI geladen.");
 
         });
+
+        System.out.println("GUI geladen.");
+
     }
+
 }

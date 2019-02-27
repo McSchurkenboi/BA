@@ -96,8 +96,9 @@ public class DeltaAnalyser {
         matchBPList = new LinkedList<>();
 
         try {
+            //Dummy
             Boilerplate tempBP = new Boilerplate65c();
-            FileOutputStream fos = new FileOutputStream(new File("C:\\Users\\rittfe1\\Desktop\\delta-report.txt"));
+            FileOutputStream fos = new FileOutputStream(Main.outputFile);
             BufferedWriter bos = new BufferedWriter(new OutputStreamWriter(fos));
 
             for (Boilerplate bp1 : bpList1) {
@@ -128,6 +129,7 @@ public class DeltaAnalyser {
                         break;
                     }
                 }
+
                 matchBPList.add(new BoilerplateMatch(bp1, tempBP, result));
                 bos.write(exportResult(bp1, tempBP, result));
                 bos.newLine();
@@ -141,8 +143,9 @@ public class DeltaAnalyser {
         } catch (IOException e) {
             System.out.println("IO-Fehler.");
 
+        }
     }
-    }
+
     /**
      * finds the agreement level of annotations from two boilerplates of the
      * same type
@@ -174,8 +177,8 @@ public class DeltaAnalyser {
                 if (b851.getConditionalActorText().equals(b852.getConditionalActorText()) && b851.getConditionText().equals(b852.getConditionText())) {
                     //Same Actor and Condition, but different function
                     return 1;
-                } else if (b851.getConditionalActorText().equals(b852.getConditionalActorText()) && b851.getFunctionDescriptionText().equals(b852.getFunctionDescriptionText())) {
-                    //Same Actor and Function, but different condition
+                } else if (b851.getConditionText().equals(b852.getConditionText()) && b851.getFunctionDescriptionText().equals(b852.getFunctionDescriptionText())) {
+                    //Same Condition and Function, but different actor
                     return 2;
                 } else if ((Vehicle.contains(b851.getConditionalActorText().toLowerCase()) && Vehicle.contains(b852.getConditionalActorText().toLowerCase())) && b851.getConditionText().equals(b852.getConditionText())) {
                     //Same generalization of Actor and Condition, but different function
@@ -213,46 +216,50 @@ public class DeltaAnalyser {
      *
      */
     public String exportResult(Boilerplate b1, Boilerplate tempB, int result) {
-
-        if ("65c".equals(tempB.getTyp())) {
-            Boilerplate65c bp1 = (Boilerplate65c) b1;
-            Boilerplate65c tempBP = (Boilerplate65c) tempB;
-            switch (result) {
-                case 0:
-                    equalCount++;
-                    return String.format("OEM-Anf " + bp1.getReqID() + " und HELLA-Anf " + tempBP.getReqID() + " sind identisch: \n" + bp1.getText());
-                case 1:
-                    return String.format("OEM-Anf " + bp1.getReqID() + " und HELLA-Anf " + tempBP.getReqID() + " beinhalten UNTERSCHIEDLICHE INFORMATIONEN zum SELBEN SYSTEM: \n" + bp1.getFunctionDescriptionText());
-                case 2:
-                    return String.format("OEM-Anf " + bp1.getReqID() + " und HELLA-Anf " + tempBP.getReqID() + " beinhalten UNTERSCHIEDLICHE INFORMATIONEN zum GLEICHEN SYSTEMTYP: \n" + bp1.getFunctionDescriptionText() + ", " + Vehicle.class.getName());
-                case 3:
-                    return String.format("OEM-Anf " + bp1.getReqID() + " und HELLA-Anf " + tempBP.getReqID() + " sind ohne inhaltliche Übereinstimmung, aber in der gleichen Boilerplate. \n" + bp1.getText());
-                case 6:
-                    differentCount++;
-                    return "No matches found for " + bp1.getReqID() + bp1.getText();
+        try {
+            if (result >= 5) {
+                differentCount++;
+                return "Keine Übereiinstimmung gefunden für OEM-Anf. " + b1.getReqID() + ": \n " + b1.getText() + "ist noch nicht spezifiziert.";
             }
-            return "No results found";
-        } else if ("85".equals(tempB.getTyp())) {
-            Boilerplate85 bp1 = (Boilerplate85) b1;
-            Boilerplate85 tempBP = (Boilerplate85) tempB;
-            switch (result) {
-                case 0:
-                    equalCount++;
-                    return String.format("OEM-Anf " + bp1.getReqID() + " und HELLA-Anf " + tempBP.getReqID() + " sind identisch: \n" + bp1.getText());
-                case 1:
-                    return String.format("OEM-Anf " + bp1.getReqID() + " und HELLA-Anf " + tempBP.getReqID() + ": " + " beinhhalten UNTERSCHIEDLICHE INFORMATIONEN zum SELBEN SYSTEM zur SELBEN BEDINGUNG: \n" + bp1.getFunctionDescriptionText());
-                case 2:
-                    return String.format("OEM-Anf " + bp1.getReqID() + " und HELLA-Anf " + tempBP.getReqID() + ": " + " beinhhalten UNTERSCHIEDLICHE BEDINGUNGEN zum SELBEN SYSTEM zur SELBEN INFORMATION: \n" + bp1.getConditionText());
-                case 3:
-                    return String.format("OEM-Anf " + bp1.getReqID() + " und HELLA-Anf " + tempBP.getReqID() + ": " + " beinhhalten UNTERSCHIEDLICHE INFORMATIONEN zum GLEICHEN SYSTEMTYP zur SELBEN BEDINGUNG: \n" + bp1.getFunctionDescriptionText() + ", " + Vehicle.class.getName());
-                case 4:
-                    return String.format("OEM-Anf " + bp1.getReqID() + " und HELLA-Anf " + tempBP.getReqID() + ": " + " beinhhalten UNTERSCHIEDLICHE BEDINGUNGEN zum GLEICHEN SYSTEMTYP zur SELBEN INFORMATION: \n" + bp1.getConditionText() + ", " + Vehicle.class.getName());
-                case 5:
-                    return String.format("OEM-Anf " + bp1.getReqID() + " und HELLA-Anf " + tempBP.getReqID() + ": " + " sind ohne inhaltliche Übereinstimmung, aber in der gleichen Boilerplate. \n" + bp1.getText());
-                case 6:
-                    differentCount++;
-                    return "No matches found for " + bp1.getReqID() + ": " + bp1.getText();
+            if ("65c".equals(b1.getTyp())) {
+                Boilerplate65c bp1 = (Boilerplate65c) b1;
+                Boilerplate65c tempBP = (Boilerplate65c) tempB;
+                switch (result) {
+                    case 0:
+                        equalCount++;
+                        return String.format("OEM-Anf " + bp1.getReqID() + " und HELLA-Anf " + tempBP.getReqID() + " sind identisch: \n OEM: " + bp1.getText());
+                    case 1:
+                        return String.format("OEM-Anf " + bp1.getReqID() + " und HELLA-Anf " + tempBP.getReqID() + " beinhalten UNTERSCHIEDLICHE INFORMATIONEN zum SELBEN SYSTEM: \n OEM: " + bp1.getFunctionDescriptionText() + " ist Delta zu \n Int: " + tempBP.getFunctionDescriptionText());
+                    case 2:
+                        return String.format("OEM-Anf " + bp1.getReqID() + " und HELLA-Anf " + tempBP.getReqID() + " beinhalten UNTERSCHIEDLICHE INFORMATIONEN zum GLEICHEN SYSTEMTYP: \n OEM: " + bp1.getFunctionDescriptionText() + ", " + bp1.getCompleteSystemText() + " ist Delta zu \n Int: " + tempBP.getFunctionDescriptionText() + ", " + tempBP.getCompleteSystemText());
+                    case 3:
+                        return String.format("OEM-Anf " + bp1.getReqID() + " und HELLA-Anf " + tempBP.getReqID() + " sind ohne inhaltliche Übereinstimmung, aber in der gleichen Boilerplate. \n OEM: " + bp1.getText());
+                    case 6:
+                        differentCount++;
+                        return "No matches found for " + bp1.getReqID() + bp1.getText();
+                }
+                return "No results found";
+            } else if ("85".equals(b1.getTyp())) {
+                Boilerplate85 bp1 = (Boilerplate85) b1;
+                Boilerplate85 tempBP = (Boilerplate85) tempB;
+                switch (result) {
+                    case 0:
+                        equalCount++;
+                        return String.format("OEM-Anf " + bp1.getReqID() + " und HELLA-Anf " + tempBP.getReqID() + " sind identisch: \n" + bp1.getText());
+                    case 1:
+                        return String.format("OEM-Anf " + bp1.getReqID() + " und HELLA-Anf " + tempBP.getReqID() + ": " + " beinhhalten UNTERSCHIEDLICHE FUNKTIONEN zum SELBEN SYSTEM zur SELBEN BEDINGUNG: \n OEM: " + bp1.getFunctionDescriptionText() + " ist Delta zu \n Int: " + tempBP.getConditionalActorText());
+                    case 2:
+                        return String.format("OEM-Anf " + bp1.getReqID() + " und HELLA-Anf " + tempBP.getReqID() + ": " + " beinhhalten UNTERSCHIEDLICHE SYSTEME unter der SELBEN BEDINGUNG zur SELBEN FUNKTION: \n OEM: " + bp1.getConditionalActorText() + " ist Delta zu \n Int: " + tempBP.getConditionalActorText());
+                    case 3:
+                        return String.format("OEM-Anf " + bp1.getReqID() + " und HELLA-Anf " + tempBP.getReqID() + ": " + " beinhhalten UNTERSCHIEDLICHE FUNKTIONEN zum GLEICHEN SYSTEMTYP zur SELBEN BEDINGUNG: \n OEM: " + bp1.getFunctionDescriptionText() + ", " + bp1.getConditionalActorText() + " ist Delta zu \n Int: " + tempBP.getFunctionDescriptionText() + ", " + tempBP.getConditionalActorText());
+                    case 4:
+                        return String.format("OEM-Anf " + bp1.getReqID() + " und HELLA-Anf " + tempBP.getReqID() + ": " + " beinhhalten UNTERSCHIEDLICHE BEDINGUNGEN zum GLEICHEN SYSTEMTYP zur SELBEN FUNKTION: \n OEM: " + bp1.getFunctionDescriptionText() + ", " + bp1.getConditionText() + " ist Delta zu \n Int: " + tempBP.getFunctionDescriptionText() + ", " + tempBP.getConditionText());
+                    case 5:
+                        return String.format("OEM-Anf " + bp1.getReqID() + " und HELLA-Anf " + tempBP.getReqID() + ": " + " sind ohne inhaltliche Übereinstimmung, aber in der gleichen Boilerplate. \n" + bp1.getText());
+                }
             }
+        } catch (ClassCastException e) {
+            System.out.println("Fehler bei BP-Vergleich: " + b1.getText() + " und " + tempB.getText());
         }
         return "Fehler.";
     }

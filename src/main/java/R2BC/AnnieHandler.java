@@ -81,7 +81,7 @@ public class AnnieHandler {
 
             //restore from File
             controller = (CorpusController) 
-                    PersistenceManager.loadObjectFromFile(new File("C:\\Users\\rittfe1\\Documents\\NetBeansProjects\\BA\\src\\gateSachen\\ANNIE Saves\\GazetteerTest.gapp"));
+                    PersistenceManager.loadObjectFromFile(new File("C:\\Users\\Felix\\Documents\\NetBeansProjects\\BA\\src\\gateSachen\\ANNIE Saves\\GazetteerTest.gapp"));
 
         } catch (GateException ex) {
             System.out.println("Gate-Fehler");
