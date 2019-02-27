@@ -36,7 +36,6 @@ public class Main {
 
             gui.getjLabel1().setVisible(false);
             gui.getjLabel2().setVisible(false);
-            gui.getExportButton().setEnabled(false);
 
             gui.getBPImportButton1().addActionListener((ActionEvent e) -> {
                 dialog.showOpenDialog(gui);
@@ -71,7 +70,6 @@ public class Main {
 
                 }
                 DA.analyseDeltas();
-                gui.getExportButton().setEnabled(true);
                 gui.getjLabel3().setText("Analysis finished");
                 dialog.setSelectedFile(null);
             });
